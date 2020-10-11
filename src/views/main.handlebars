@@ -1,0 +1,8 @@
+<div class="add-team-btn-div">
+    <p>Tambien puedes agregar un equipo a la lista:</p>
+    <form id="agregar-equipo" method="GET" action="/agregar-equipo">
+        <button type="submit" class="btn btn-dark" >Agregar equipo</button>
+    </form>
+</div>
+<h2>Lista de equipos:</h2>
+{{>teamList listaEquipos=data.clubes}}
