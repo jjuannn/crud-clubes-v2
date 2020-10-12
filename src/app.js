@@ -15,18 +15,10 @@ const hbs = expHandlebars.create()
 app.engine("handlebars", hbs.engine)
 app.set("view engine", "handlebars")
 
-app.get("/", async (req, res) => {
-    const container = configureDI.configureContainer()
+const container = configureDI.configureContainer()
+const clubController = container.get("ClubController")
 
-    const ClubRepository = container.get('ClubRepository');
-    const clubes = await ClubRepository.getAll();
-    res.render("main", {
-        layout: "layout",
-        data:{
-            clubes
-        }
-    })
-})
+app.get("/", clubController.index.bind(clubController))
 
 const PUERTO = 3030
 app.listen(process.env.PUERTO || PUERTO, console.log(`listening at port ${PUERTO}`))
