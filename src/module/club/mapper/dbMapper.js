@@ -1,7 +1,6 @@
-const di = require("../../../config/di")
 const { Equipo } = require("../entities/club")
 
-function mapearDB(equipo){
+function mapearDB(team){
     const {
         nombre,
         abreviatura,
@@ -13,7 +12,7 @@ function mapearDB(equipo){
         website,
         pais,
         fotoEscudo
-    } = equipo
+    } = team
 
     return new Equipo(
         nombre,
