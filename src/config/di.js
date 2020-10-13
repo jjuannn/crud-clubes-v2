@@ -1,9 +1,9 @@
 const uuid = require("uuidv4")
 const fs = require("fs")
 const { default: DIContainer, object, get, factory } = require("rsdi")
-const ClubRepository = require("../module/club/repository/json/clubRepository.js")
-const ClubService = require("../module/club/service/clubService.js")
-const ClubController = require("../module/club/controller/clubController.js")
+const { ClubController, ClubService, ClubRepository} = require("../module/module");
+
+
 const multer = require("multer")
 /**
  * @returns {Function}
@@ -12,8 +12,7 @@ function configureUUID(){
     return uuid
 }
 
-function configureJSON_DB(){
-    process.env.JSON_DB_PATH = "./data/equipos.json" // ARREGLAR ESTO, NO  TIENE QUE ESTAR HARDCODEADO
+function configureJSONDB(){
     return process.env.JSON_DB_PATH
 }
 function configureMulter(){
@@ -32,7 +31,7 @@ function addCommonDefinitions(container){
     container.addDefinitions({
         fs,
         uuid: factory(configureUUID),
-        JSON_DB_PATH: factory(configureJSON_DB),
+        JSON_DB_PATH: factory(configureJSONDB),
         multer: factory(configureMulter)
     })
 }
