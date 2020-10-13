@@ -46,7 +46,9 @@ function addClubModuleDefinitions(container){
         ClubRepository: object(ClubRepository).construct(get("uuid"), get("fs"), get("JSON_DB_PATH"))
     })
 }
-
+/**
+ * @returns {DIContainer}
+ */
 function configureContainer(){
     const container = new DIContainer()
     addCommonDefinitions(container)

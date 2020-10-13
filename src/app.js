@@ -26,5 +26,5 @@ initClubModule(app, container)
 const clubController = container.get("ClubController")
 app.get("/", clubController.index.bind(clubController))
 
-const PUERTO = 3030
+const PUERTO = 8080
 app.listen(process.env.PUERTO || PUERTO, console.log(`listening at port ${PUERTO}`))

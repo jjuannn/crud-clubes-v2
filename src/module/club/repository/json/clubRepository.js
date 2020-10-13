@@ -1,6 +1,7 @@
 const AbstractClubRepository = require("../abstractRepository")
 const mapper = require("../../mapper/dbMapper.js");
 const { mapearDB } = require("../../mapper/dbMapper.js");
+const Club = require("../../entities/club.js")
 
 module.exports = class ClubRepository extends AbstractClubRepository{
     /**
@@ -15,7 +16,10 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         this.fileSystem = fileSystem;
         this.jsonDbPath = jsonDbPath
     }
-
+    /**
+     * 
+     * @param {String} id 
+     */
     async getById(id){
         const teamList = this.getAll()
 
@@ -27,7 +31,10 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         return mapearDB(team)
 
     }
-
+    /**
+     * 
+     * @param {Club} newTeam 
+     */
     async saveNewTeam(newTeam){
         const teamList = this.getAll()
 
@@ -41,7 +48,10 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         
         return teamList
     }
-
+    /**
+     * 
+     * @param {Club} editedTeam 
+     */
     async saveEditedTeam(editedTeam){
         const teamList = this.getAll()
 
@@ -55,6 +65,10 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         this.writeDb(teamList)
     }
 
+    /**
+     * 
+     * @param {String} id 
+     */
     async delete(id){
         const teamList = this.getAll()
 
@@ -71,7 +85,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
 
     /**
-     * @param {Promise<Array<import("../../entities/club.js")>>}
+     * @returns {Promise<Array<import("../../entities/club.js")>>}
      */
     async getAll(){
         return this.readData().map( team => mapper.mapearDB(team) )
@@ -84,7 +98,10 @@ module.exports = class ClubRepository extends AbstractClubRepository{
     readData(){
         return JSON.parse( this.fileSystem.readFileSync( this.jsonDbPath, "utf-8") )
     }
-
+    /**
+     * 
+     * @param {Object} content 
+     */
     writeDb(content){
         this.fileSystem.writeFileSync( this.jsonDbPath, JSON.parse(content) )
     }

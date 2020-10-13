@@ -1,3 +1,4 @@
+const Club = require("../entities/club.js")
 module.exports = class ClubService{
     /**
      * 
@@ -7,6 +8,10 @@ module.exports = class ClubService{
         this.clubRepository = clubRepository
     }
 
+    /**
+     * 
+     * @param {String} id 
+     */
     async getById(id){
         if(id === undefined){
             throw new Error("Se necesita un ID para obtener un equipo")
@@ -15,7 +20,10 @@ module.exports = class ClubService{
         return this.clubRepository.getById(id)
     }
 
-
+    /**
+     * 
+     * @param {Club} newTeam 
+     */
     async saveNewTeam(newTeam){
         if(newTeam === undefined){
             throw new Error("No se pudo agregar el equipo")
@@ -24,6 +32,10 @@ module.exports = class ClubService{
         return this.clubRepository.saveNewTeam(newTeam)
     }
 
+    /**
+     * 
+     * @param {Club} editedTeam 
+     */
     async saveEditedTeam(editedTeam){
         if(editedTeam === undefined){
             throw new Error("No se pudo guardar la edicion del equipo")
@@ -32,6 +44,10 @@ module.exports = class ClubService{
         return this.clubRepository.saveEditedTeam(editedTeam)  
     }
 
+    /**
+     * 
+     * @param {String} id 
+     */
     async delete(id){
         if(id === undefined){
             throw new Error("Se necesita un ID para borrar un equipo")
@@ -39,7 +55,10 @@ module.exports = class ClubService{
 
         return this.clubRepository.delete(id)  
     }
-
+    /**
+     * /**
+     * @returns {Promise<Array<import("../../entities/club.js")>>}
+     */
     async getAll(){
         return this.clubRepository.getAll()    
     }
