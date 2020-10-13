@@ -1,13 +1,13 @@
 const abstractController = require("./abstractController.js")
 
-module.exports = class clubController extends abstractController{
+module.exports = class ClubController extends abstractController{
     /**
      * 
      * @param {import("../service/clubService.js")} clubService 
      */
     constructor(uploadMiddleware, clubService){
         super()
-        this.ROUTE_BASE = "/club"
+        this.ROUTE_BASE = "/club" 
         this.uploadMiddleware = uploadMiddleware
         this.clubService = clubService
     }
@@ -29,7 +29,7 @@ module.exports = class clubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async index(req , res){
-        const teamList = this.clubService.getAll()
+        const teamList = await this.clubService.getAll()
 
         res.render("main", {
             layout: "layout",
