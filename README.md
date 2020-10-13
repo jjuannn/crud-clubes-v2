@@ -4,3 +4,4 @@
 ## Falta : 
 - [ ] configurar rutas para ver, editar, borrar y crear equipos
 - [ ] agregar views para estas funcionalidades
+- [ ] testear la app
