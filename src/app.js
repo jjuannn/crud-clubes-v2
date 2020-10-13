@@ -1,9 +1,9 @@
-require("dotenv").config()
+require("dotenv").config({path: "../.env"})
 const express = require("express")
 const app = express()
 
 const configureDI = require("./config/di.js")
-
+const { initClubModule } = require("./module/module.js")
 app.use(express.static("src"))
 app.use(express.static(__dirname + "/uploads"))
 app.use(express.static(__dirname + '/styles'))
@@ -16,8 +16,10 @@ app.engine("handlebars", hbs.engine)
 app.set("view engine", "handlebars")
 
 const container = configureDI.configureContainer()
-const clubController = container.get("ClubController")
 
+initClubModule(app, container)
+
+const clubController = container.get("ClubController")
 app.get("/", clubController.index.bind(clubController))
 
 const PUERTO = 3030
