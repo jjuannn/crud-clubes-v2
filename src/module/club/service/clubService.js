@@ -1,4 +1,4 @@
-module.exports = class clubService{
+module.exports = class ClubService{
     /**
      * 
      * @param {import("../repository/abstractRepository")} clubRepository 
@@ -41,7 +41,7 @@ module.exports = class clubService{
     }
 
     async getAll(){
-        return this.clubRepository.getAll()
+        return this.clubRepository.getAll()    
     }
     
 }
