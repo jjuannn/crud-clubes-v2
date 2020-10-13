@@ -9,8 +9,8 @@
 }
 .carta:hover{
     box-shadow: 0px 7px 10px -5px rgba(0,0,0,0.75);
-    width: 20rem;
-}
+    /* width: 20rem; */
+} 
 
 .escudoCarta{
     width: 70px;
