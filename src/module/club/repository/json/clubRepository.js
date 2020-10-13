@@ -75,6 +75,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      */
     async getAll(){
         return this.readData().map( team => mapper.mapearDB(team) )
+        
     }
     
     /**
