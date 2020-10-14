@@ -5,15 +5,15 @@
         <div class="card-body">
             <h5 class="card-title">{{equipo.nombre}}</h5>
             <div>
-                <form class="action-form"method="GET" action="/ver-equipo">
+                <form class="action-form"method="GET" action="/club/ver-equipo">
                     <input type="hidden" name="id" value="{{equipo.numeroId}}">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
                 </form>
-                <form class="action-form" method="GET" action="/editar-equipo">
+                <form class="action-form" method="GET" action="/club/editar-equipo">
                     <input type="hidden" name="id" value="{{equipo.numeroId}}">
                     <button type="submit" class="btn btn-warning"><i class="fas fa-pen-square"></i></button>
                 </form>
-                <form class="action-form" method="GET" action="/borrar-equipo">
+                <form class="action-form" method="GET" action="/club/borrar-equipo">
                     <input type="hidden" name="id" value="{{equipo.numeroId}}">
                     <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </form>
