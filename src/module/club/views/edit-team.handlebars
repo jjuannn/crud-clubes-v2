@@ -1,0 +1,44 @@
+<form id="formulario-editar" method="POST" style="width: 50%;" action="/club/editar-equipo?:id" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="nombre">Nombre del club:*</label>
+    <input type="text" id="nombre" name="nombre" class="form-control" value="{{data.equipo.nombre}}" required>
+  </div>
+  <div class="form-group">
+    <label for="tla">Abreviatura:*</label>
+    <input type="text" id="tla" name="abreviatura" class="form-control" value="{{data.equipo.abreviatura}}" required>
+  </div>
+  <div class="form-group">
+    <label for="estadio">Estadio:*</label>
+    <input type="text" id="estadio" name="estadio" class="form-control" value="{{data.equipo.estadio}}" required>
+  </div>
+  <div class="form-group">
+    <label for="direccion">Direccion:*</label>
+    <input type="text" id="direccion" name="direccion" class="form-control" value="{{data.equipo.direccion}}" required>
+  </div>
+  <div class="form-group">
+    <label for="fundacion">Año de fundacion:*</label>
+    <input type="number" id="añoFundacion" name="anoFundacion" class="form-control" value="{{data.equipo.anoFundacion}}" required>
+  </div>
+  <div class="form-group">
+    <label for="numeroId">Id:*</label>
+    <input type="number" id="numeroId" name="numeroId" min="1000" value="{{data.equipo.numeroId}}" readonly class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="telefono">Telefono:*</label>
+    <input  id="telefono" name="telefono" class="form-control" value="{{data.equipo.telefono}}" required>
+  </div>
+  <div class="form-group">
+    <label for="website">Sitio web:*</label>
+    <input type="text" class="form-control" id="sitioWeb" name="website" value="{{data.equipo.website}}" required>
+  </div>
+  <div class="form-group">
+    <label for="pais">Pais:*</label>
+    <input type="text" class="form-control" id="pais" name="pais" value="{{data.equipo.pais}}" required>
+  </div>
+  <div class="form-group">
+      <label for="imagen">Escudo:*</label>
+      <input type="file" class="form-control" text="Seleccionar escudo" id="imagen" name="escudo">
+  </div>
+  <p id="aclaracion">*Required field</p>
+  <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+</form>
