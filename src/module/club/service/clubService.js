@@ -10,7 +10,7 @@ module.exports = class ClubService{
 
     /**
      * 
-     * @param {String} id 
+     * @param {Number} id 
      */
     async getById(id){
         if(id === undefined){
