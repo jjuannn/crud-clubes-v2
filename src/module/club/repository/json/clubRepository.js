@@ -1,5 +1,5 @@
 const AbstractClubRepository = require("../abstractRepository")
-const mapper = require("../../mapper/dbMapper.js");
+const mapper = require("../../mapper/dbMapper.js")
 const { mapearDB } = require("../../mapper/dbMapper.js");
 const Club = require("../../entities/club.js")
 
@@ -10,26 +10,25 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      * @param {String} jsonDbPath
      */
 
-     constructor(uuid, fileSystem, jsonDbPath){
+     constructor(fileSystem, jsonDbPath){
         super()
-        this.uuid = uuid;
         this.fileSystem = fileSystem;
         this.jsonDbPath = jsonDbPath
     }
     /**
      * 
-     * @param {String} id 
+     * @param {Number} id 
      */
     async getById(id){
-        const teamList = this.getAll()
-
-        const team = teamList.find( team => team.numeroId === id )
-        if(!team){
+        const teamList = await this.getAll()
+        
+        console.log(typeof teamList)
+        const teamIndex = teamList.findIndex( team => team.numeroId === Number(id) )
+        if(teamIndex === -1){
             throw new Error ("No se pudo encontrar el equipo solicitado")
         }
-
-        return mapearDB(team)
-
+        
+        return mapearDB(teamList[teamIndex])
     }
     /**
      * 
@@ -37,7 +36,6 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      */
     async saveNewTeam(newTeam){
         const teamList = this.getAll()
-
         const equalTeam = teamList.find( team => team.numeroId === id )
         if(!equalTeam){
             teamList.push(newTeam)
@@ -53,7 +51,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      * @param {Club} editedTeam 
      */
     async saveEditedTeam(editedTeam){
-        const teamList = this.getAll()
+        const teamList = await this.getAll()
 
         const teamIndex = teamList.findIndex( team => team.numeroId === editedTeam.numeroId )
         if(teamIndex === -1 ){
@@ -64,6 +62,17 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         this.writeDb(teamList)
     }
+/*
+const teamList = await this.getAll()
+
+        const teamIndex = teamList.findIndex( team => team.numeroId === Number(id) )
+        if(teamIndex === -1){
+            throw new Error ("No se pudo encontrar el equipo solicitado")
+        }
+        
+        return mapearDB(teamList[teamIndex])
+*/
+
 
     /**
      * 
@@ -89,7 +98,6 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      */
     async getAll(){
         return this.readData().map( team => mapper.mapearDB(team) )
-        
     }
     
     /**
