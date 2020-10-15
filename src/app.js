@@ -5,8 +5,9 @@ const path = require("path")
 
 const configureDI = require("./config/di.js")
 const { initClubModule } = require("./module/module.js")
+
 app.use(express.static("src"))
-app.use(express.static(__dirname + "/uploads"))
+app.use(express.static(__dirname + "/module/club/uploads"))
 app.use(express.static(__dirname + '/styles'))
 
 const viewsPath = path.join(__dirname, "/module/club/views")
