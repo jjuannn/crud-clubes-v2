@@ -2,11 +2,11 @@ const fs = require("fs")
 const { default: DIContainer, object, get, factory } = require("rsdi")
 const { ClubController, ClubService, ClubRepository} = require("../module/module");
 const bodyParser = require("body-parser")
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const multer = require("multer")
 
+
 function configureBodyParser(){
-    const urlencodedParser = bodyParser.urlencoded({ extended: false })
-    
     return urlencodedParser
 }
 function configureJSONDB(){
@@ -15,10 +15,10 @@ function configureJSONDB(){
 function configureMulter(){
 
     const upload = multer({
-        dest: './uploads/imagenes'
+        dest: './module/club/uploads'
     })
 
-    return multer({ upload})
+    return upload
 }
 /**
  * 
