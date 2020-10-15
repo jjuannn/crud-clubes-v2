@@ -22,7 +22,6 @@ module.exports = class ClubRepository extends AbstractClubRepository{
     async getById(id){
         const teamList = await this.getAll()
         
-        console.log(typeof teamList)
         const teamIndex = teamList.findIndex( team => team.numeroId === Number(id) )
         if(teamIndex === -1){
             throw new Error ("No se pudo encontrar el equipo solicitado")
@@ -36,7 +35,8 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      */
     async saveNewTeam(newTeam){
         const teamList = this.getAll()
-        const equalTeam = teamList.find( team => team.numeroId === id )
+        const equalTeam = teamList.find( team => team.numeroId === newTeam.numeroId )
+
         if(!equalTeam){
             teamList.push(newTeam)
             this.writeDb(teamList)
@@ -55,7 +55,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         const teamIndex = teamList.findIndex( team => team.numeroId === editedTeam.numeroId )
         if(teamIndex === -1 ){
-            throw new Error("No se pudo encontrar el equipo solicitado")
+            throw new Error("No se pudo encontrar el equipo solicitado (id-not-found)")
         }
 
         teamList.splice(teamIndex, 1, editedTeam)
@@ -111,7 +111,7 @@ const teamList = await this.getAll()
      * @param {Object} content 
      */
     writeDb(content){
-        this.fileSystem.writeFileSync( this.jsonDbPath, JSON.parse(content) )
+        this.fileSystem.writeFileSync( this.jsonDbPath, JSON.stringify(content) )
     }
 
 }
