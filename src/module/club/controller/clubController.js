@@ -1,5 +1,5 @@
 const abstractController = require("./abstractController.js")
-
+const formMapper = require("../mapper/formToEntity.js")
 
 module.exports = class ClubController extends abstractController{
     /**
@@ -24,7 +24,9 @@ module.exports = class ClubController extends abstractController{
         app.get(`${ROUTE_BASE}`, this.index.bind(this))
         app.get(`${ROUTE_BASE}/ver-equipo?:id`, this.view.bind(this))
         app.get(`${ROUTE_BASE}/editar-equipo?:id`, this.edit.bind(this))
-        app.post(`${ROUTE_BASE}/editar-equipo?:id`, this.bodyParser , this.saveEditedTeam.bind(this))
+        app.post(`${ROUTE_BASE}/editar-equipo?:id`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveEditedTeam.bind(this))
+        app.get(`${ROUTE_BASE}/agregar-equipo`, this.add.bind(this))
+        app.post(`${ROUTE_BASE}/agregar-equipo`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveNewTeam.bind(this))
     }
     
     /**
@@ -34,8 +36,13 @@ module.exports = class ClubController extends abstractController{
      */
     async saveEditedTeam(req, res){
 
-        const editedTeam = req.body
-        console.log(req.body)
+        const editedTeam = formMapper.formToEntity(req.body)
+
+        if(req.file){
+            const { path } = req.file
+            editedTeam.fotoEscudo = path
+        }
+
         this.clubService.saveEditedTeam(editedTeam)
 
         return res.redirect("/")
@@ -58,7 +65,30 @@ module.exports = class ClubController extends abstractController{
             }
         })
     }
+    /**
+     * @param {import("express").Request} req
+     * @param {import("express").Response} res
+     */
+    async add(req, res){
+        res.render("add-team", {
+            layout: "layout"
+        })
+    }
+    /**
+     * @param {import("express").Request} req
+     * @param {import("express").Response} res
+     */
+    async saveNewTeam(req, res){
+        const newTeam = formMapper.formToEntity(req.body)
 
+        if(req.file){
+            const { path } = req.file
+            console.log(path)
+            newTeam.fotoEscudo = path
+        }
+        console.log(newTeam)
+        res.redirect("/")
+    }
     /**
      * 
      * @param {import("express").Response} res 
