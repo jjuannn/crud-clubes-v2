@@ -26,7 +26,7 @@ module.exports = class ClubService{
      */
     async saveNewTeam(newTeam){
         if(newTeam === undefined){
-            throw new Error("No se pudo agregar el equipo")
+            throw new Error("No se pudo agregar el equipo (team-is-undefined)")
         }
         
         return this.clubRepository.saveNewTeam(newTeam)
