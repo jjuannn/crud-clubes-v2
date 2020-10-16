@@ -22,11 +22,16 @@ module.exports = class ClubController extends abstractController{
         const ROUTE_BASE = this.ROUTE_BASE
 
         app.get(`${ROUTE_BASE}`, this.index.bind(this))
+        
         app.get(`${ROUTE_BASE}/ver-equipo?:id`, this.view.bind(this))
+        
         app.get(`${ROUTE_BASE}/editar-equipo?:id`, this.edit.bind(this))
         app.post(`${ROUTE_BASE}/editar-equipo?:id`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveEditedTeam.bind(this))
+        
         app.get(`${ROUTE_BASE}/agregar-equipo`, this.add.bind(this))
         app.post(`${ROUTE_BASE}/agregar-equipo`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveNewTeam.bind(this))
+    
+        app.get(`${ROUTE_BASE}/borrar-equipo?:id`, this.delete.bind(this))
     }
     
     /**
@@ -54,9 +59,8 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async edit(req, res){
-        const id = req.query.id
 
-        const equipo = await this.clubService.getById(id)
+        const equipo = await this.clubService.getById(req.query.id)
 
         res.render("edit-team", {
             layout: "layout",
@@ -64,21 +68,25 @@ module.exports = class ClubController extends abstractController{
                 equipo
             }
         })
+
     }
     /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
      */
     async add(req, res){
+
         res.render("add-team", {
             layout: "layout"
         })
+
     }
     /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
      */
     async saveNewTeam(req, res){
+
         const newTeam = formMapper.formToEntity(req.body)
 
         if(req.file){
@@ -95,6 +103,7 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async index(req , res){
+
         const teamList = await this.clubService.getAll()
 
         res.render("main", {
@@ -111,9 +120,8 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async view(req, res){
-        const id = req.query.id
 
-        const team = await this.clubService.getById(id)
+        const team = await this.clubService.getById(req.query.id)
 
         res.render("view-team", {
             layout: "layout",
@@ -123,7 +131,15 @@ module.exports = class ClubController extends abstractController{
         })
 
     }
-
+    /**
+     * @param {import("express").Request} req
+     * @param {import("express").Response} res
+     */
+    async delete(req, res){
+        this.clubService.delete(req.query.id)
+    
+        return res.redirect("/")
+    }
 
 
 }
