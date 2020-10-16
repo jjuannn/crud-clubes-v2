@@ -22,7 +22,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
     async getById(id){
         const teamList = await this.getAll()
         
-        const teamIndex = teamList.findIndex( team => team.numeroId === Number(id) )
+        const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
             throw new Error ("No se pudo encontrar el equipo solicitado")
         }
@@ -62,24 +62,14 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         this.writeDb(teamList)
     }
-/*
-const teamList = await this.getAll()
-
-        const teamIndex = teamList.findIndex( team => team.numeroId === Number(id) )
-        if(teamIndex === -1){
-            throw new Error ("No se pudo encontrar el equipo solicitado")
-        }
-        
-        return mapearDB(teamList[teamIndex])
-*/
-
 
     /**
      * 
      * @param {String} id 
      */
     async delete(id){
-        const teamList = this.getAll()
+        
+        const teamList = await this.getAll()
 
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
 
