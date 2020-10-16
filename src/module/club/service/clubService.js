@@ -49,7 +49,7 @@ module.exports = class ClubService{
      * @param {String} id 
      */
     async delete(id){
-        if(id === undefined || id === Number){
+        if(typeof id !== String){
             throw new Error("Se necesita un ID valido para borrar un equipo")
         }
 
