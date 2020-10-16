@@ -49,8 +49,8 @@ module.exports = class ClubService{
      * @param {String} id 
      */
     async delete(id){
-        if(id === undefined){
-            throw new Error("Se necesita un ID para borrar un equipo")
+        if(id === undefined || id === Number){
+            throw new Error("Se necesita un ID valido para borrar un equipo")
         }
 
         return this.clubRepository.delete(id)  
