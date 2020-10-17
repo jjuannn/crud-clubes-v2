@@ -1,0 +1,26 @@
+#container{
+    text-align: center;
+    margin-top: 15px;
+}
+.escudoCarta{
+    width: 70px;
+    height: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    margin: auto;
+    cursor: pointer;
+}
+.carta{
+    text-align: center;
+    display: inline-block;
+    margin: 5px;
+    width: 18rem;
+    padding-top: 5px;
+    max-height: 190px;
+    min-height: 190px; 
+}
+.carta:hover{
+    box-shadow: 0px 7px 10px -5px rgba(0,0,0,0.75);
+    cursor: pointer;
+    /* width: 20rem; */
+} 

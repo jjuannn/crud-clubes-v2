@@ -1,46 +1,9 @@
-.carta{
-    text-align: center;
-    display: inline-block;
-    margin: 5px;
-    width: 18rem;
-    padding-top: 5px;
-    max-height: 190px;
-    min-height: 190px; 
-}
-.carta:hover{
-    box-shadow: 0px 7px 10px -5px rgba(0,0,0,0.75);
-    cursor: pointer;
-    /* width: 20rem; */
-} 
-#formulario-editar{
-    text-align: center;
-    margin: 0 auto;
-}
 body{
     margin-bottom: 50px;
 }
-.escudoCarta{
-    width: 70px;
-    height: 70px;
-    max-width: 70px;
-    min-width: 70px;
-    margin: auto;
-    cursor: pointer;
-}
-
-#container{
-    text-align: center;
-    margin-top: 15px;
-}
-
-.action-form{
-    display: inline-block
-}
-
 .div-title{
     text-align: center;
 }
-
 #title{
     font-family: 'Ubuntu', sans-serif;    
     margin-left: auto;
@@ -48,7 +11,6 @@ body{
     padding: 9px;
     background: lightblue;
 }
-
 .add-team-btn-div{
     text-align: center;
     padding: 10px;

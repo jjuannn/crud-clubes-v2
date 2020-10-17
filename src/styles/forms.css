@@ -1,0 +1,13 @@
+#formulario-editar{
+    text-align: center;
+    margin: 0 auto;
+    width: 50%;
+}
+.action-form{
+    display: inline-block
+}
+#formulario-agregar{
+    text-align: center;
+    margin: 0 auto;
+    width: 50%;
+}
