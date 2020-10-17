@@ -91,10 +91,11 @@ module.exports = class ClubController extends abstractController{
 
         if(req.file){
             const { path } = req.file
-            console.log(path)
             newTeam.fotoEscudo = path
         }
-        console.log(newTeam)
+        
+        this.clubService.saveNewTeam(newTeam)
+
         res.redirect("/")
     }
     /**
@@ -136,6 +137,7 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res
      */
     async delete(req, res){
+
         this.clubService.delete(req.query.id)
     
         return res.redirect("/")
