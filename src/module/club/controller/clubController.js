@@ -23,15 +23,15 @@ module.exports = class ClubController extends abstractController{
 
         app.get(`${ROUTE_BASE}`, this.index.bind(this))
         
-        app.get(`${ROUTE_BASE}/ver-equipo?:id`, this.view.bind(this))
+        app.get(`${ROUTE_BASE}/view-team?:id`, this.view.bind(this))
         
-        app.get(`${ROUTE_BASE}/editar-equipo?:id`, this.edit.bind(this))
-        app.post(`${ROUTE_BASE}/editar-equipo?:id`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveEditedTeam.bind(this))
+        app.get(`${ROUTE_BASE}/edit-team?:id`, this.edit.bind(this))
+        app.post(`${ROUTE_BASE}/edit-team?:id`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveEditedTeam.bind(this))
         
-        app.get(`${ROUTE_BASE}/agregar-equipo`, this.add.bind(this))
-        app.post(`${ROUTE_BASE}/agregar-equipo`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveNewTeam.bind(this))
+        app.get(`${ROUTE_BASE}/add-team`, this.add.bind(this))
+        app.post(`${ROUTE_BASE}/add-team`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveNewTeam.bind(this))
     
-        app.get(`${ROUTE_BASE}/borrar-equipo?:id`, this.delete.bind(this))
+        app.get(`${ROUTE_BASE}/delete-team?:id`, this.delete.bind(this))
     }
     
     /**

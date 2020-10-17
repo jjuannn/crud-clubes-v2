@@ -11,3 +11,13 @@
     margin: 0 auto;
     width: 50%;
 }
+a:hover{
+    color: white;
+    text-decoration: none;
+}
+a:visited{
+    color: white;
+}
+a{
+    color: white;
+}
