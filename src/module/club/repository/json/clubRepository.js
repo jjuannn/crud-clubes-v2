@@ -15,6 +15,8 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         this.fileSystem = fileSystem;
         this.jsonDbPath = jsonDbPath
     }
+
+
     /**
      * 
      * @param {Number} id 
@@ -24,28 +26,33 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
-            throw new Error ("No se pudo encontrar el equipo solicitado")
+            throw new Error ("No se pudo encontrar el equipo solicitado (id-not-found)")
         }
         
         return mapearDB(teamList[teamIndex])
     }
+
+
     /**
      * 
      * @param {Club} newTeam 
      */
     async saveNewTeam(newTeam){
-        const teamList = this.getAll()
+        const teamList = await this.getAll()
+        
         const equalTeam = teamList.find( team => team.numeroId === newTeam.numeroId )
 
         if(!equalTeam){
             teamList.push(newTeam)
             this.writeDb(teamList)
         } else {
-            throw new Error("Ya hay un equipo con ese ID")
+            throw new Error("Ya hay un equipo con ese ID (id-already-in-use)")
         }
         
         return teamList
     }
+
+
     /**
      * 
      * @param {Club} editedTeam 
@@ -72,9 +79,8 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         const teamList = await this.getAll()
 
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
-
         if(teamIndex === -1){
-            throw new Error ("No se pudo eliminar el equipo solicitado")
+            throw new Error ("No se pudo eliminar el equipo solicitado (id-not-found)")
         }
 
         teamList.splice(teamIndex, 1)
@@ -90,12 +96,15 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         return this.readData().map( team => mapper.mapearDB(team) )
     }
     
+
     /**
      * @param {Array<import("../../entities/club.js")}
      */
     readData(){
         return JSON.parse( this.fileSystem.readFileSync( this.jsonDbPath, "utf-8") )
     }
+
+
     /**
      * 
      * @param {Object} content 
