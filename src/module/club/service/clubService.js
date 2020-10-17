@@ -27,7 +27,7 @@ module.exports = class ClubService{
      */
     async saveNewTeam(newTeam){
         if(!(newTeam instanceof Equipo)){
-            throw new Error("No se pudo agregar el equipo (team-is-undefined)")
+            throw new Error("No se pudo agregar el equipo (team-is-not-mapped)")
         }
         
         return this.clubRepository.saveNewTeam(newTeam)
@@ -38,8 +38,8 @@ module.exports = class ClubService{
      * @param {Equipo} editedTeam 
      */
     async saveEditedTeam(editedTeam){
-        if(editedTeam === undefined){
-            throw new Error("No se pudo guardar la edicion del equipo")
+        if(!(editedTeam instanceof Equipo)){
+            throw new Error("No se pudo guardar la edicion del equipo (team-is-not-mapped)")
         }
 
         return this.clubRepository.saveEditedTeam(editedTeam)  
