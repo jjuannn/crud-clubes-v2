@@ -15,7 +15,7 @@ function configureJSONDB(){
 function configureMulter(){
 
     const upload = multer({
-        dest: './module/club/uploads'
+        dest: process.env.UPLOAD_MULTER_DIR
     })
 
     return upload
