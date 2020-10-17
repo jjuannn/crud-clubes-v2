@@ -1,4 +1,5 @@
-const Club = require("../entities/club.js")
+const { Equipo } = require("../entities/club.js")
+
 module.exports = class ClubService{
     /**
      * 
@@ -22,10 +23,10 @@ module.exports = class ClubService{
 
     /**
      * 
-     * @param {Club} newTeam 
+     * @param {Equipo} newTeam 
      */
     async saveNewTeam(newTeam){
-        if(newTeam === undefined){
+        if(!(newTeam instanceof Equipo)){
             throw new Error("No se pudo agregar el equipo (team-is-undefined)")
         }
         
@@ -34,7 +35,7 @@ module.exports = class ClubService{
 
     /**
      * 
-     * @param {Club} editedTeam 
+     * @param {Equipo} editedTeam 
      */
     async saveEditedTeam(editedTeam){
         if(editedTeam === undefined){
@@ -49,11 +50,11 @@ module.exports = class ClubService{
      * @param {String} id 
      */
     async delete(id){
-        if(typeof id !== String){
-            throw new Error("Se necesita un ID valido para borrar un equipo")
+        if(typeof id !== "string"){
+            throw new Error("No se pudo borrar el equipo. El ID tiene que ser un string")
         }
 
-        return this.clubRepository.delete(id)  
+        return this.clubRepository.delete(id) 
     }
     /**
      * /**
