@@ -25,7 +25,7 @@ const container = configureDI.configureContainer()
 initClubModule(app, container)
 
 const clubController = container.get("ClubController")
-app.get("/", clubController.index.bind(clubController))
+app.get("/", clubController.viewHomePage.bind(clubController))
 
 const PUERTO = 8080
 app.listen(process.env.PUERTO || PUERTO, console.log(`listening at port ${PUERTO}`))

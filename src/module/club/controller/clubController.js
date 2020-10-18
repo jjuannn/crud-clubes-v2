@@ -35,6 +35,14 @@ module.exports = class ClubController extends abstractController{
     }
     
     /**
+     * @param {import("express").Request} req
+     * @param {import("express").Response} res
+     */
+    async viewHomePage(req, res){
+        res.render("home", { layout: "layout"})
+    }
+
+    /**
      * 
      * @param {import("express").Response} res 
      * @param {import("express").Request} req
@@ -46,11 +54,12 @@ module.exports = class ClubController extends abstractController{
         if(req.file){
             const { path } = req.file
             editedTeam.fotoEscudo = path
+            console.log(path)
         }
 
         this.clubService.saveEditedTeam(editedTeam)
 
-        return res.redirect("/")
+        return res.redirect("/club")
     }
 
     /**
@@ -96,7 +105,7 @@ module.exports = class ClubController extends abstractController{
         
         this.clubService.saveNewTeam(newTeam)
 
-        res.redirect("/")
+        res.redirect("/club")
     }
     /**
      * 
@@ -140,7 +149,7 @@ module.exports = class ClubController extends abstractController{
 
         this.clubService.delete(req.query.id)
     
-        return res.redirect("/")
+        return res.redirect("/club")
     }
 
 

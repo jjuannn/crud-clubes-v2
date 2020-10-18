@@ -1,5 +1,6 @@
 body{
     margin-bottom: 50px;
+    background-color: #fdffb6
 }
 .div-title{
     text-align: center;
@@ -9,10 +10,14 @@ body{
     margin-left: auto;
     margin-right: auto;
     padding: 9px;
-    background: lightblue;
 }
 .add-team-btn-div{
     text-align: center;
     padding: 10px;
     border-bottom: 1px solid gray
+}
+.home-div{
+    padding-top: 80px;
+    text-align: center;
+    
 }
