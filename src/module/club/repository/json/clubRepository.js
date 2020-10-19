@@ -64,6 +64,10 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         if(teamIndex === -1 ){
             throw new Error("No se pudo encontrar el equipo solicitado (id-not-found)")
         }
+        
+        if(!editedTeam.fotoEscudo){
+            editedTeam.fotoEscudo = teamList[teamIndex].fotoEscudo
+        }
 
         teamList.splice(teamIndex, 1, editedTeam)
 
