@@ -25,21 +25,41 @@ module.exports = class ClubController extends abstractController{
         
         app.get(`${ROUTE_BASE}/view-team?:id`, this.view.bind(this))
         
-        app.get(`${ROUTE_BASE}/edit-team?:id`, this.edit.bind(this))
+        app.get(`${ROUTE_BASE}/edit-team?:id`, this.renderEditPage.bind(this))
         app.post(`${ROUTE_BASE}/edit-team?:id`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveEditedTeam.bind(this))
         
-        app.get(`${ROUTE_BASE}/add-team`, this.add.bind(this))
+        app.get(`${ROUTE_BASE}/add-team`, this.renderAddPage.bind(this))
         app.post(`${ROUTE_BASE}/add-team`, this.uploadMiddleware.single("fotoEscudo"), this.bodyParser, this.saveNewTeam.bind(this))
     
         app.get(`${ROUTE_BASE}/delete-team?:id`, this.delete.bind(this))
     }
-    
+
     /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
      */
-    async viewHomePage(req, res){
-        res.render("home", { layout: "layout"})
+
+    async renderAddPage(req, res){
+        res.render("add-team", { layout: "layout" })
+    }
+
+    /**
+     * @param {import("express").Request} req
+     * @param {import("express").Response} res
+     */
+    async renderHomePage(req, res){
+        res.render("home", { layout: "layout" })
+    }
+
+    /**
+     * 
+     * @param {import("express").Request} req 
+     * @param {import("express").Response} res 
+     */
+    async renderEditPage(req, res){
+        const equipo = await this.clubService.getById(req.query.id)
+        res.render("edit-team", { layout: "layout", data:{ equipo } })
+
     }
 
     /**
@@ -48,14 +68,8 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req
      */
     async saveEditedTeam(req, res){
-
         const editedTeam = formMapper.formToEntity(req.body)
-
-        if(req.file){
-            const { path } = req.file
-            editedTeam.fotoEscudo = path
-            console.log(path)
-        }
+        if(req.file){editedTeam.fotoEscudo = `/uploads/${req.file.filename}`}
 
         this.clubService.saveEditedTeam(editedTeam)
 
@@ -63,45 +77,12 @@ module.exports = class ClubController extends abstractController{
     }
 
     /**
-     * 
-     * @param {import("express").Response} res 
-     * @param {import("express").Request} req 
-     */
-    async edit(req, res){
-
-        const equipo = await this.clubService.getById(req.query.id)
-
-        res.render("edit-team", {
-            layout: "layout",
-            data:{
-                equipo
-            }
-        })
-
-    }
-    /**
-     * @param {import("express").Request} req
-     * @param {import("express").Response} res
-     */
-    async add(req, res){
-
-        res.render("add-team", {
-            layout: "layout"
-        })
-
-    }
-    /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
      */
     async saveNewTeam(req, res){
-
         const newTeam = formMapper.formToEntity(req.body)
-
-        if(req.file){
-            const { path } = req.file
-            newTeam.fotoEscudo = path
-        }
+        if(req.file){newTeam.fotoEscudo = `/uploads/${req.file.filename}`}
         
         this.clubService.saveNewTeam(newTeam)
 
@@ -116,12 +97,7 @@ module.exports = class ClubController extends abstractController{
 
         const teamList = await this.clubService.getAll()
 
-        res.render("main", {
-            layout: "layout",
-            data:{
-                teamList
-            }
-        })
+        res.render("main", { layout: "layout", data:{ teamList } })
     }
 
     /**
@@ -133,12 +109,7 @@ module.exports = class ClubController extends abstractController{
 
         const team = await this.clubService.getById(req.query.id)
 
-        res.render("view-team", {
-            layout: "layout",
-            data:{
-                team
-            }
-        })
+        res.render("view-team", { layout: "layout", data:{ team } })
 
     }
     /**
@@ -146,7 +117,6 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res
      */
     async delete(req, res){
-
         this.clubService.delete(req.query.id)
     
         return res.redirect("/club")
