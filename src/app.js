@@ -7,7 +7,7 @@ const configureDI = require("./config/di.js")
 const { initClubModule } = require("./module/module.js")
 
 app.use(express.static("src"))
-app.use(express.static(__dirname + "/module/club/uploads"))
+app.use(express.static(__dirname + "/module/club"))
 app.use(express.static(__dirname + '/styles'))
 
 const viewsPath = path.join(__dirname, "/module/club/views")
@@ -25,7 +25,7 @@ const container = configureDI.configureContainer()
 initClubModule(app, container)
 
 const clubController = container.get("ClubController")
-app.get("/", clubController.viewHomePage.bind(clubController))
+app.get("/", clubController.renderHomePage.bind(clubController))
 
 const PUERTO = 8080
 app.listen(process.env.PUERTO || PUERTO, console.log(`listening at port ${PUERTO}`))
