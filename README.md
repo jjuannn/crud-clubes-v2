@@ -12,8 +12,6 @@ Correr **npm run dev** para empezar la aplicacion en el puerto 8080
 # WIP - WIP - WIP - WIP - WIP - WIP
 
 ## To-do list : 
-- [ ] Adivinar como bosta arreglar Multer para los escudos.
-- [ ] Unit and 2E2 testing.
 - [ ] NO OLVIDARME DEL TESTING.
 - [ ] NO OLVIDARME DEL TESTING.
 - [ ] NO OLVIDARME DEL TESTING.
