@@ -53,7 +53,7 @@ module.exports = class ClubService{
         if(typeof id !== "string"){
             throw new Error("No se pudo borrar el equipo. El ID tiene que ser un string")
         }
-
+        
         return this.clubRepository.delete(id) 
     }
     /**
