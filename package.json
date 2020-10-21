@@ -4,8 +4,8 @@
   "description": "CRUD Clubes",
   "main": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cd src && nodemon app.js"
+    "dev": "cd src && nodemon app.js",
+    "test": "jest --collect-coverage"
   },
   "author": "Juan",
   "license": "ISC",
@@ -21,6 +21,8 @@
     "uuidv4": "^6.2.4"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "jest": "^26.6.0",
     "jsdoc": "^3.6.6",
     "nodemon": "^2.0.4"
   }
