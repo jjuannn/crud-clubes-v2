@@ -17,7 +17,7 @@ module.exports = class ClubService{
      * @param {Number} id 
      */
     async getById(id){
-        if(id === undefined){
+        if(id === undefined || typeof id !== "string"){
             throw new InvalidIdError()
         }
         
@@ -53,7 +53,7 @@ module.exports = class ClubService{
      * @param {String} id 
      */
     async delete(id){
-        if(typeof id !== "string"){
+        if(id === undefined || typeof id !== "string"){
             throw new InvalidIdError()
         }
         
