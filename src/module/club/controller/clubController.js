@@ -1,5 +1,6 @@
 const abstractController = require("./abstractController.js")
 const formMapper = require("../mapper/formToEntity.js")
+const UndefinedIdError = require("./errors/undefinedError.js")
 
 module.exports = class ClubController extends abstractController{
     /**
@@ -57,6 +58,10 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res 
      */
     async renderEditPage(req, res){
+        if(!req.query.id){
+            throw new UndefinedIdError()
+        }
+        
         const equipo = await this.clubService.getById(req.query.id)
         res.render("edit-team", { layout: "layout", data:{ equipo } })
 
@@ -106,6 +111,9 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async view(req, res){
+        if(!req.query.id){
+            throw new UndefinedIdError()
+        }
 
         const team = await this.clubService.getById(req.query.id)
 
@@ -117,6 +125,10 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res
      */
     async delete(req, res){
+        if(!req.query.id){
+            throw new UndefinedIdError()
+        }
+
         this.clubService.delete(req.query.id)
     
         return res.redirect("/club")

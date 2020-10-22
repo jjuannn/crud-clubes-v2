@@ -89,7 +89,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         teamList.splice(teamIndex, 1)
         
-        this.writeDb(teamList)
+        return this.writeDb(teamList)
     }
 
 

@@ -28,5 +28,4 @@ function formToEntity(team){
     )
 
 }
-
 module.exports = { formToEntity }
