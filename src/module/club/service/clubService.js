@@ -1,4 +1,7 @@
 const { Equipo } = require("../entities/club.js")
+const NotMappedError = require("./errors/notMappedError")
+const InvalidIdError = require("./errors/invalidIdError")
+
 
 module.exports = class ClubService{
     /**
@@ -15,7 +18,7 @@ module.exports = class ClubService{
      */
     async getById(id){
         if(id === undefined){
-            throw new Error("Se necesita un ID para obtener un equipo")
+            throw new InvalidIdError()
         }
         
         return this.clubRepository.getById(id)
@@ -27,7 +30,7 @@ module.exports = class ClubService{
      */
     async saveNewTeam(newTeam){
         if(!(newTeam instanceof Equipo)){
-            throw new Error("No se pudo agregar el equipo (team-is-not-mapped)")
+            throw new NotMappedError()
         }
         
         return this.clubRepository.saveNewTeam(newTeam)
@@ -39,7 +42,7 @@ module.exports = class ClubService{
      */
     async saveEditedTeam(editedTeam){
         if(!(editedTeam instanceof Equipo)){
-            throw new Error("No se pudo guardar la edicion del equipo (team-is-not-mapped)")
+            throw new NotMappedError()
         }
 
         return this.clubRepository.saveEditedTeam(editedTeam)  
@@ -51,7 +54,7 @@ module.exports = class ClubService{
      */
     async delete(id){
         if(typeof id !== "string"){
-            throw new Error("No se pudo borrar el equipo. El ID tiene que ser un string")
+            throw new InvalidIdError()
         }
         
         return this.clubRepository.delete(id) 
