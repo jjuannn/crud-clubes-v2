@@ -56,7 +56,6 @@ test("prueba renderear el form para agregar un equipo", async() => {
 })
 test("falla al renderear el form para editar un equipo sin un ID ", async() => {
     const renderMock = jest.fn()
-
     try{
         await controller.renderEditPage({query: {}}, {render: renderMock})
     } catch (e){
@@ -80,7 +79,6 @@ test("prueba cargar la pagina para ver la info. de un equipo", async() => {
 })
 test("falla al intentar cargar un equipo sin un ID", async() => {
     const renderMock = jest.fn()
-
     try{       
         await controller.view({query: {}}, {render: renderMock})
     } catch(e){
@@ -92,7 +90,6 @@ test("falla al intentar cargar un equipo sin un ID", async() => {
 })
 test("falla al intentar borrar un equipo sin un ID", async() => {
     const renderMock = jest.fn()
-
     try{
         await controller.delete({query: {}}, {render: renderMock})
     } catch(e){
@@ -117,7 +114,6 @@ test("prueba guardar un equipo editado", () => {
     }
 
     const bodyMock = formToEntity(body)
-
     const redirectMock = jest.fn()
 
     controller.saveEditedTeam({body: bodyMock, file: {filename: "test123"}}, {redirect: redirectMock})
@@ -142,7 +138,6 @@ test("prueba guardar un nuevo equipo", () => {
     }
 
     const bodyMock = formToEntity(body)
-
     const redirectMock = jest.fn()
 
     controller.saveNewTeam({body: bodyMock, file: {filename: "test123"}}, {redirect: redirectMock})
