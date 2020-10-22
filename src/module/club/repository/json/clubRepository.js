@@ -2,6 +2,9 @@ const AbstractClubRepository = require("../abstractRepository")
 const mapper = require("../../mapper/dbMapper.js")
 const { mapearDB } = require("../../mapper/dbMapper.js");
 const Club = require("../../entities/club.js")
+const IdInUseError = require("../errors/idInUseError")
+const IdNotFound = require("../errors/idNotFound")
+
 
 module.exports = class ClubRepository extends AbstractClubRepository{
     /**
@@ -26,7 +29,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
-            throw new Error ("No se pudo encontrar el equipo solicitado (id-not-found)")
+            throw new IdNotFound()
         }
         
         return mapearDB(teamList[teamIndex])
@@ -46,7 +49,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
             teamList.push(newTeam)
             this.writeDb(teamList)
         } else {
-            throw new Error("Ya hay un equipo con ese ID (id-already-in-use)")
+            throw new IdInUseError()
         }
         
         return teamList
@@ -62,7 +65,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         const teamIndex = teamList.findIndex( team => team.numeroId === editedTeam.numeroId )
         if(teamIndex === -1 ){
-            throw new Error("No se pudo encontrar el equipo solicitado (id-not-found)")
+            throw new IdNotFound()
         }
         
         if(!editedTeam.fotoEscudo){
@@ -84,7 +87,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
-            throw new Error ("No se pudo eliminar el equipo solicitado (id-not-found)")
+            throw new IdNotFound()
         }
 
         teamList.splice(teamIndex, 1)

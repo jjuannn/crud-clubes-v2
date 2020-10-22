@@ -1,7 +1,9 @@
+const AbstractRepositoryError = require("./errors/abstractRepositoryError.js")
+
 class AbstractRepository{
     constructor(){
         if(new.target === AbstractRepository){
-            throw new Error("no puedes definir esto")
+            throw new AbstractRepositoryError()
         }
     }
 
