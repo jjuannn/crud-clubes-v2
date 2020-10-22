@@ -12,8 +12,5 @@ Correr **npm run dev** para empezar la aplicacion en el puerto 8080
 # WIP - WIP - WIP - WIP - WIP - WIP
 
 ## To-do list : 
-- [ ] NO OLVIDARME DEL TESTING.
-- [ ] NO OLVIDARME DEL TESTING.
-- [ ] NO OLVIDARME DEL TESTING.
-- [ ] NO OLVIDARME DEL TESTING.
-- [ ] Agregar session.
+- [ ] Completar tests para el modulo Repositorio.
+- [ ] Agregar session para mostrar mensajes de exito / error.
