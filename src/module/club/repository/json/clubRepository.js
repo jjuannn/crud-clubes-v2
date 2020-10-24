@@ -1,10 +1,10 @@
 const AbstractClubRepository = require("../abstractRepository")
 const mapper = require("../../mapper/dbMapper.js")
 const { mapearDB } = require("../../mapper/dbMapper.js");
-const Club = require("../../entities/club.js")
+const Equipo = require("../../entities/club.js")
 const IdInUseError = require("../errors/idInUseError")
-const IdNotFound = require("../errors/idNotFound")
-
+const IdNotFoundError = require("../errors/idNotFoundError")
+const InvalidIdError = require("../errors/invalidIdError")
 
 module.exports = class ClubRepository extends AbstractClubRepository{
     /**
@@ -25,20 +25,23 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      * @param {Number} id 
      */
     async getById(id){
+        if(typeof id !== "string"){
+            throw new InvalidIdError()
+        }
         const teamList = await this.getAll()
         
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
-            throw new IdNotFound()
+            throw new IdNotFoundError()
         }
-        
+
         return mapearDB(teamList[teamIndex])
     }
 
 
     /**
      * 
-     * @param {Club} newTeam 
+     * @param {Equipo} newTeam 
      */
     async saveNewTeam(newTeam){
         const teamList = await this.getAll()
@@ -58,7 +61,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
     /**
      * 
-     * @param {Club} editedTeam 
+     * @param {Equipo} editedTeam 
      */
     async saveEditedTeam(editedTeam){
         const teamList = await this.getAll()
@@ -74,7 +77,9 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         teamList.splice(teamIndex, 1, editedTeam)
 
-        return this.writeDb(teamList)
+        this.writeDb(teamList)
+
+        return teamList
     }
 
     /**
@@ -82,7 +87,6 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      * @param {String} id 
      */
     async delete(id){
-        
         const teamList = await this.getAll()
 
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
