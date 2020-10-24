@@ -2,7 +2,7 @@ const ClubService = require("../clubService.js")
 const { formToEntity } = require("../../mapper/formToEntity")
 const InvalidIdError = require("../errors/invalidIdError.js")
 const TeamNotMappedError = require("../errors/notMappedError.js")
-const { response } = require("express")
+const IdInUseError = require("../../repository/errors/idInUseError.js")
 
 const repositoryMock = {
     getById: jest.fn(() => Promise.resolve({})),
@@ -114,7 +114,7 @@ test("prueba borrar un equipo", async() => {
 })
 test("falla al intentar borrar un equipo con un ID invalida", async() => {
     try{
-        service.delete(3) // tambien falla con ID undefined
+        await service.delete(3) // tambien falla con ID undefined
     }catch(e){
         expect(e).toBeInstanceOf(InvalidIdError)
     }
