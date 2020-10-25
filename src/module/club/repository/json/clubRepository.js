@@ -68,7 +68,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         const teamIndex = teamList.findIndex( team => team.numeroId === editedTeam.numeroId )
         if(teamIndex === -1 ){
-            throw new IdNotFound()
+            throw new IdNotFoundError()
         }
         
         if(!editedTeam.fotoEscudo){
@@ -91,7 +91,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
-            throw new IdNotFound()
+            throw new IdNotFoundError()
         }
 
         teamList.splice(teamIndex, 1)

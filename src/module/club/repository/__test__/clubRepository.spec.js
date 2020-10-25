@@ -60,7 +60,7 @@ test("falla al no encontrar un equipo con el ID ingresado", async() => {
 test("prueba correctamente la function getById", async() => {
     const validId = "3"
     repository.getAll = jest.fn().mockImplementationOnce(() => Promise.resolve([{id: "3"}]))
-    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => "0")
+    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => 0)
 
     const selectedTeam = await repository.getById(validId)
 
@@ -85,7 +85,6 @@ test("falla al intentar guardar un nuevo equipo con un ID en uso", async() => {
     const newTeam = new Equipo()
     Array.prototype.find = jest.fn().mockImplementationOnce(() => true)
     repository.getAll = jest.fn().mockImplementationOnce(() => [])
-
     try{
         await repository.saveNewTeam(newTeam)
     }catch(e){
@@ -94,14 +93,44 @@ test("falla al intentar guardar un nuevo equipo con un ID en uso", async() => {
 
 })
 
-test("guarda correctamente la edicion de los equipos", async() => {
+test("saveEditedTeam llama a las funciones correspondientes", async() => {
     repository.getAll = jest.fn().mockImplementationOnce(() => [{name:"team", id: "3", fotoEscudo: "/fake_route/12345"}])
-    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => "0")
-    //Array.prototype.splice = jest.fn().mockImplementationOnce(() => )
+    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => 0)
     const editedTeam = {name:"team2", id: "3"}
     
     await repository.saveEditedTeam(editedTeam)
 
-    expect(Array.prototype.splice).toHaveBeenCalledTimes(41238912)
+    expect(Array.prototype.splice).toHaveBeenCalledTimes(1)
+    expect(Array.prototype.findIndex).toHaveBeenCalledTimes(1)
+    expect(repository.writeDb).toHaveBeenCalledTimes(1)
+})
+test("saveEditedTeam falla al no encontrar el equipo solicitado", async() => {
+    repository.getAll = jest.fn().mockImplementationOnce(() => [])
+    const editedTeam = {}
+    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => -1)
+    try{
+        await repository.saveEditedTeam(editedTeam)
+    }catch(e){
+        expect(e).toBeInstanceOf(IdNotFoundError)
+    }
+})
+test("delete se ejecuta correctamente", async() => {
+    repository.getAll = jest.fn().mockImplementationOnce(() => [])
+    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => 0)
+    
+    await repository.delete("3")
+
+    expect(Array.prototype.findIndex).toHaveBeenCalledTimes(1)
+    expect(Array.prototype.splice).toHaveBeenCalledTimes(1)
+    expect(this.writeDb).toHaveBeenCalledTimes(1)
+})
+test("delete falla al no encontrar un equipo con el id introducido", async() => {
+    repository.getAll = jest.fn().mockImplementationOnce(() => [])
+    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => -1)
+    try {
+        await repository.delete("3")
+    } catch (e) {
+        expect(e).toBeInstanceOf(IdNotFoundError)
+    }
 
 })
