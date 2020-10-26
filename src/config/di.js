@@ -4,10 +4,22 @@ const { ClubController, ClubService, ClubRepository} = require("../module/module
 const bodyParser = require("body-parser")
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const multer = require("multer")
-
+const session = require("express-session")
 
 function configureBodyParser(){
     return urlencodedParser
+}
+function configureSession(){
+    const ONE_WEEK_IN_SECONDS = 604800000
+
+    const sessionOptions = {
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: ONE_WEEK_IN_SECONDS }
+    }
+
+    return session(sessionOptions)
 }
 function configureJSONDB(){
     return process.env.JSON_DB_PATH
@@ -29,7 +41,8 @@ function addCommonDefinitions(container){
         fs,
         bodyParser: factory(configureBodyParser),
         JSON_DB_PATH: factory(configureJSONDB),
-        multer: factory(configureMulter)
+        multer: factory(configureMulter),
+        session: factory(configureSession)
     })
 }
 

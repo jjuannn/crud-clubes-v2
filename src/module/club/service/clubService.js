@@ -18,7 +18,7 @@ module.exports = class ClubService{
      */
     async getById(id){
         if(id === undefined || typeof id !== "string"){
-            throw new InvalidIdError()
+            throw new InvalidIdError("El ID introducido no es valido")
         }
         
         return this.clubRepository.getById(id)
@@ -30,7 +30,7 @@ module.exports = class ClubService{
      */
     async saveNewTeam(newTeam){
         if(!(newTeam instanceof Equipo)){
-            throw new NotMappedError()
+            throw new NotMappedError("team-not-mapped")
         }
         
         return this.clubRepository.saveNewTeam(newTeam)
@@ -42,7 +42,7 @@ module.exports = class ClubService{
      */
     async saveEditedTeam(editedTeam){
         if(!(editedTeam instanceof Equipo)){
-            throw new NotMappedError()
+            throw new NotMappedError("team-not-mapped")
         }
 
         return this.clubRepository.saveEditedTeam(editedTeam)  
@@ -54,7 +54,7 @@ module.exports = class ClubService{
      */
     async delete(id){
         if(id === undefined || typeof id !== "string"){
-            throw new InvalidIdError()
+            throw new InvalidIdError("El ID introducido no es valido")
         }
         
         return this.clubRepository.delete(id) 

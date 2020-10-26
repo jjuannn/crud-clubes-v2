@@ -19,8 +19,9 @@ app.engine("handlebars", hbs.engine)
 app.set("view engine", "handlebars")
 app.set("views", viewsPath)
 
-
 const container = configureDI.configureContainer()
+
+app.use(container.get("session"))
 
 initClubModule(app, container)
 

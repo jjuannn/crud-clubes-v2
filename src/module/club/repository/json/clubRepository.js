@@ -26,13 +26,13 @@ module.exports = class ClubRepository extends AbstractClubRepository{
      */
     async getById(id){
         if(typeof id !== "string"){
-            throw new InvalidIdError()
+            throw new InvalidIdError("El ID introducido no es valido")
         }
         const teamList = await this.getAll()
         
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
-            throw new IdNotFoundError()
+            throw new IdNotFoundError("No se encontro un equipo con el ID solicitado")
         }
 
         return mapearDB(teamList[teamIndex])
@@ -52,7 +52,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
             teamList.push(newTeam)
             this.writeDb(teamList)
         } else {
-            throw new IdInUseError()
+            throw new IdInUseError("El ID ingresado ya esta en uso")
         }
         
         return teamList
@@ -68,7 +68,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         const teamIndex = teamList.findIndex( team => team.numeroId === editedTeam.numeroId )
         if(teamIndex === -1 ){
-            throw new IdNotFoundError()
+            throw new IdNotFoundError("No se encontro un equipo con el ID solicitado")
         }
         
         if(!editedTeam.fotoEscudo){
@@ -91,7 +91,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
 
         const teamIndex = teamList.findIndex( team => team.numeroId === id )
         if(teamIndex === -1){
-            throw new IdNotFoundError()
+            throw new IdNotFoundError("No se encontro un equipo con el ID solicitado")
         }
 
         teamList.splice(teamIndex, 1)

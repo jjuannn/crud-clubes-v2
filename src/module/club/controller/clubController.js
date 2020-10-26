@@ -34,7 +34,6 @@ module.exports = class ClubController extends abstractController{
     
         app.get(`${ROUTE_BASE}/delete-team?:id`, this.delete.bind(this))
     }
-
     /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
@@ -43,7 +42,6 @@ module.exports = class ClubController extends abstractController{
     async renderAddPage(req, res){
         res.render("add-team", { layout: "layout" })
     }
-
     /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
@@ -51,22 +49,21 @@ module.exports = class ClubController extends abstractController{
     async renderHomePage(req, res){
         res.render("home", { layout: "layout" })
     }
-
     /**
      * 
      * @param {import("express").Request} req 
      * @param {import("express").Response} res 
      */
     async renderEditPage(req, res){
-        if(!req.query.id){
-            throw new UndefinedIdError()
+        if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para editar un equipo")}
+        try{
+            const equipo = await this.clubService.getById(req.query.id)
+            res.render("edit-team", { layout: "layout", data:{ equipo } })
+        }catch(e){
+            req.session.errors = [e.message]
+            res.redirect("/club")
         }
-        
-        const equipo = await this.clubService.getById(req.query.id)
-        res.render("edit-team", { layout: "layout", data:{ equipo } })
-
     }
-
     /**
      * 
      * @param {import("express").Response} res 
@@ -75,12 +72,14 @@ module.exports = class ClubController extends abstractController{
     async saveEditedTeam(req, res){
         const editedTeam = formMapper.formToEntity(req.body)
         if(req.file){editedTeam.fotoEscudo = `/uploads/${req.file.filename}`}
-
-        this.clubService.saveEditedTeam(editedTeam)
-
-        return res.redirect("/club")
+        try{
+            this.clubService.saveEditedTeam(editedTeam)
+            req.session.messages = [`El equipo con ID ${editedTeam.numeroId} se edito correctamente`]
+        }catch(e){
+            req.session.errors = [e.message]
+        }
+        res.redirect("/club")
     }
-
     /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
@@ -88,9 +87,13 @@ module.exports = class ClubController extends abstractController{
     async saveNewTeam(req, res){
         const newTeam = formMapper.formToEntity(req.body)
         if(req.file){newTeam.fotoEscudo = `/uploads/${req.file.filename}`}
-        
-        this.clubService.saveNewTeam(newTeam)
 
+        try{
+            await this.clubService.saveNewTeam(newTeam)
+            req.session.messages = [`El equipo con ID ${newTeam.numeroId} se agrego correctamente`]
+        }catch(e){
+            req.session.errors = [e.message]
+        }
         res.redirect("/club")
     }
     /**
@@ -99,40 +102,39 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async index(req , res){
-
         const teamList = await this.clubService.getAll()
-
-        res.render("main", { layout: "layout", data:{ teamList } })
+        const { errors, messages } = req.session;
+        res.render("main", { layout: "layout", data:{ teamList, errors, messages } })
+        req.session.errors = [];
+        req.session.messages = [];
     }
-
     /**
      * 
      * @param {import("express").Response} res 
      * @param {import("express").Request} req 
      */
     async view(req, res){
-        if(!req.query.id){
-            throw new UndefinedIdError()
-        }
-
-        const team = await this.clubService.getById(req.query.id)
-
-        res.render("view-team", { layout: "layout", data:{ team } })
-
+        if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para ver un equipo")}
+        try {
+            const team = await this.clubService.getById(req.query.id)
+            res.render("view-team", { layout: "layout", data:{ team } })
+        } catch (e) {
+            req.session.errors = [e.message]
+            res.redirect("/club")
+        } 
     }
     /**
      * @param {import("express").Request} req
      * @param {import("express").Response} res
      */
     async delete(req, res){
-        if(!req.query.id){
-            throw new UndefinedIdError()
+        if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para borrar un equipo")}
+        try{
+            await this.clubService.delete(req.query.id)
+            req.session.messages = [`El club con ID ${req.query.id} se borro correctamente`];
+        }catch(e){
+            req.session.errors = [e.message]
         }
-
-        this.clubService.delete(req.query.id)
-    
-        return res.redirect("/club")
+        res.redirect("/club")
     }
-
-
 }
