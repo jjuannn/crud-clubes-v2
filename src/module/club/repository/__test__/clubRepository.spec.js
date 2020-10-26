@@ -132,5 +132,4 @@ test("delete falla al no encontrar un equipo con el id introducido", async() => 
     } catch (e) {
         expect(e).toBeInstanceOf(IdNotFoundError)
     }
-
 })

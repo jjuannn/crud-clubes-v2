@@ -75,10 +75,11 @@ module.exports = class ClubController extends abstractController{
         try{
             this.clubService.saveEditedTeam(editedTeam)
             req.session.messages = [`El equipo con ID ${editedTeam.numeroId} se edito correctamente`]
+            res.redirect("/club")
         }catch(e){
             req.session.errors = [e.message]
+            res.redirect("/club")
         }
-        res.redirect("/club")
     }
     /**
      * @param {import("express").Request} req
@@ -87,14 +88,14 @@ module.exports = class ClubController extends abstractController{
     async saveNewTeam(req, res){
         const newTeam = formMapper.formToEntity(req.body)
         if(req.file){newTeam.fotoEscudo = `/uploads/${req.file.filename}`}
-
         try{
             await this.clubService.saveNewTeam(newTeam)
             req.session.messages = [`El equipo con ID ${newTeam.numeroId} se agrego correctamente`]
+            res.redirect("/club")
         }catch(e){
             req.session.errors = [e.message]
+            res.redirect("/club")
         }
-        res.redirect("/club")
     }
     /**
      * 
