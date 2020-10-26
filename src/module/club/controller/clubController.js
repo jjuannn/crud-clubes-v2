@@ -47,7 +47,7 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res
      */
     async renderHomePage(req, res){
-        res.render("home", { layout: "layout" })
+        res.render("home", { layout: "layout" }) 
     }
     /**
      * 

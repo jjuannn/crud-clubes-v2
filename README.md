@@ -1,16 +1,27 @@
 # CRUD Clubes
-CRUD¹ Clubes para la tarea de la clase 18 de r/argentina-programa
+CRUD¹ Clubes for r/argentina-programa
 
 ¹Create, Read, Update and Delete
 
 ## Correr el proyecto: 
 
-Correr **npm install** para cargar las dependencias
+Run **npm install** to install the dependencies.
 
-Correr **npm run dev** para empezar la aplicacion en el puerto 8080
+Run **npm run dev** to start the app at port 8080.
 
-# WIP - WIP - WIP - WIP - WIP - WIP
+Run **npm run test** to run the tests.
 
 ## To-do list :
-- [ ] Arreglar los test (que ahora estan fallando ya que modifique la aplicacion).
-- [ ] Agregar fotos del proyecto.
+- [ ] Esperar correciones
+
+# Photos: 
+### Home page:
+![home-view](/sample_images/home-page.png)
+### Team list page: 
+![team-list-page](/sample_images/team-list-page.png)
+### View team page:
+![view-team-page](/sample_images/team-view-page.png)
+### Add team page: 
+![add-team-page](/sample_images/add-team-page.png)
+### Edit team page:
+![edite-team-page](/sample_images/edit-team-page.png)
