@@ -13,6 +13,19 @@ const service = {
 
 const controller = new ClubController({}, {}, service)
 
+const exampleBodyMock = {
+    nombre: "Estudiantes",
+    abreviatura: "ELP",
+    estadio: "Jorge Luis Hirschi",
+    direccion: "1 y 57",
+    anoFundacion: 1905,
+    numeroId: 7777,
+    telefono: "123-456-789",
+    website: "estudiantesdelaplata.com",
+    pais: "Argentina",
+    fotoEscudo: "/uploads/test123"
+}
+
 test("renderHomePage se ejecuta correctamente", async () => {
     const renderMock = jest.fn()
 
@@ -100,18 +113,7 @@ test("delete falla al intentar borrar un equipo sin un ID", async() => {
 test("saveEditedTeam se ejecuta correctamente", () => {
     expect.assertions(2)
 
-    const body = {
-    nombre: "Estudiantes",
-    abreviatura: "ELP",
-    estadio: "Jorge Luis Hirschi",
-    direccion: "1 y 57",
-    anoFundacion: 1905,
-    numeroId: 7777,
-    telefono: "123-456-789",
-    website: "estudiantesdelaplata.com",
-    pais: "Argentina",
-    fotoEscudo: "/uploads/test123"
-    }
+    const body = exampleBodyMock
 
     const bodyMock = formToEntity(body)
     const redirectMock = jest.fn()
@@ -124,18 +126,7 @@ test("saveEditedTeam se ejecuta correctamente", () => {
 })
 test("saveNewTeam se ejecuta correctamente", () => {
     expect.assertions(2)
-    const body = {
-        nombre: "Estudiantes",
-        abreviatura: "ELP",
-        estadio: "Jorge Luis Hirschi",
-        direccion: "1 y 57",
-        anoFundacion: 1905,
-        numeroId: 7777,
-        telefono: "123-456-789",
-        website: "estudiantesdelaplata.com",
-        pais: "Argentina",
-        fotoEscudo: "/uploads/test123"
-    }
+    const body = exampleBodyMock
 
     const bodyMock = formToEntity(body)
     const redirectMock = jest.fn()

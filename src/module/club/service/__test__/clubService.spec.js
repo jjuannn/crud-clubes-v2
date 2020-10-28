@@ -14,6 +14,19 @@ const repositoryMock = {
     writeDb: jest.fn(() => Promise.resolve())
 }
 
+const exampleBodyMock = {
+    nombre: "Estudiantes",
+    abreviatura: "ELP",
+    estadio: "Jorge Luis Hirschi",
+    direccion: "1 y 57",
+    anoFundacion: 1905,
+    numeroId: 7777,
+    telefono: "123-456-789",
+    website: "estudiantesdelaplata.com",
+    pais: "Argentina",
+    fotoEscudo: "/uploads/test123"
+}
+
 const service = new ClubService(repositoryMock)
 
 test("prueba buscar un equipo con un ID valida", async() => {
@@ -28,18 +41,7 @@ test("falla al intentar buscar un equipo con una ID invalida", async() => {
     }
 })
 test("prueba guardar un nuevo equipo", async() => {
-    const body = {
-        nombre: "Estudiantes",
-        abreviatura: "ELP",
-        estadio: "Jorge Luis Hirschi",
-        direccion: "1 y 57",
-        anoFundacion: 1905,
-        numeroId: 7777,
-        telefono: "123-456-789",
-        website: "estudiantesdelaplata.com",
-        pais: "Argentina",
-        fotoEscudo: "/uploads/test123"
-    }
+    const body = exampleBodyMock
 
     const bodyMock = formToEntity(body)
 
@@ -48,18 +50,7 @@ test("prueba guardar un nuevo equipo", async() => {
     expect(repositoryMock.saveNewTeam).toHaveBeenCalledTimes(1)
 })
 test("falla al intentar guardar un nuevo club sin clase Equipo", async() => {
-    const bodyMock = {
-        nombre: "Estudiantes",
-        abreviatura: "ELP",
-        estadio: "Jorge Luis Hirschi",
-        direccion: "1 y 57",
-        anoFundacion: 1905,
-        numeroId: 7777,
-        telefono: "123-456-789",
-        website: "estudiantesdelaplata.com",
-        pais: "Argentina",
-        fotoEscudo: "/uploads/test123"
-    }
+    const bodyMock = exampleBodyMock
 
     try{
         await service.saveNewTeam(bodyMock)
@@ -68,18 +59,7 @@ test("falla al intentar guardar un nuevo club sin clase Equipo", async() => {
     }
 })
 test("prueba guardar la edicion de un equipo", async() => {
-    const body = {
-        nombre: "Estudiantes",
-        abreviatura: "ELP",
-        estadio: "Jorge Luis Hirschi",
-        direccion: "1 y 57",
-        anoFundacion: 1905,
-        numeroId: 7777,
-        telefono: "123-456-789",
-        website: "estudiantesdelaplata.com",
-        pais: "Argentina",
-        fotoEscudo: "/uploads/test123"
-    }
+    const body = exampleBodyMock
 
     const bodyMock = formToEntity(body)
 
@@ -88,18 +68,7 @@ test("prueba guardar la edicion de un equipo", async() => {
     expect(repositoryMock.saveEditedTeam).toHaveBeenCalledTimes(1)
 })
 test("falla al intentar guardar la edicion de un equipo sin clase Equipo", async() => {
-    const body = {
-        nombre: "Estudiantes",
-        abreviatura: "ELP",
-        estadio: "Jorge Luis Hirschi",
-        direccion: "1 y 57",
-        anoFundacion: 1905,
-        numeroId: 7777,
-        telefono: "123-456-789",
-        website: "estudiantesdelaplata.com",
-        pais: "Argentina",
-        fotoEscudo: "/uploads/test123"
-    }
+    const body = exampleBodyMock
 
     try{
         await service.saveEditedTeam(body)
