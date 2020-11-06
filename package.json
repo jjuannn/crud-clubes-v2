@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "dev": "cd src && nodemon app.js",
+    "start": "cd src && node app.js",
     "test": "jest --collect-coverage"
   },
   "author": "Juan",

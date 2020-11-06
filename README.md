@@ -7,12 +7,14 @@ CRUD¹ Clubes for r/argentina-programa
 
 Run **npm install** to install the dependencies.
 
-Run **npm run dev** to start the app at port 8080.
+Run **npm run start** to start the app at port 8080.
+
+Run **npm run dev** to start the app in dev-mode.
 
 Run **npm run test** to run the tests.
 
 ## To-do list :
-- [ ] Esperar correciones
+- [ ] Arreglar tests
 
 # Photos: 
 ### Home page:
