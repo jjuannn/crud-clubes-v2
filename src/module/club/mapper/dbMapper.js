@@ -1,17 +1,17 @@
 const { Equipo } = require("../entities/club")
 
-function mapearDB(team){
+function databaseMapper(team){
     const {
         nombre,
         abreviatura,
         estadio,
         direccion,
-        anoFundacion,
-        numeroId,
+        ano_fundacion: anoFundacion,
+        id: numeroId,
         telefono,
         website,
         pais,
-        fotoEscudo
+        foto_escudo: fotoEscudo
     } = team
 
     return new Equipo(
@@ -28,4 +28,4 @@ function mapearDB(team){
     )
 }
 
-module.exports = { mapearDB }
+module.exports = { databaseMapper }
