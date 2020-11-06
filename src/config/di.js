@@ -1,10 +1,10 @@
-const fs = require("fs")
 const { default: DIContainer, object, get, factory } = require("rsdi")
 const { ClubController, ClubService, ClubRepository} = require("../module/module");
 const bodyParser = require("body-parser")
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const multer = require("multer")
 const session = require("express-session")
+const SQLiteDatabase = require("better-sqlite3")
 
 function configureBodyParser(){
     return urlencodedParser
@@ -21,8 +21,8 @@ function configureSession(){
 
     return session(sessionOptions)
 }
-function configureJSONDB(){
-    return process.env.JSON_DB_PATH
+function configureDatabase(){
+    return new SQLiteDatabase(process.env.DB_PATH)
 }
 function configureMulter(){
 
@@ -38,9 +38,8 @@ function configureMulter(){
  */
 function addCommonDefinitions(container){
     container.addDefinitions({
-        fs,
         bodyParser: factory(configureBodyParser),
-        JSON_DB_PATH: factory(configureJSONDB),
+        mainDatabase: factory(configureDatabase),
         multer: factory(configureMulter),
         session: factory(configureSession)
     })
@@ -54,7 +53,7 @@ function addClubModuleDefinitions(container){
     container.addDefinitions({
         ClubController: object(ClubController).construct(get("multer"), get("bodyParser"), get("ClubService")),
         ClubService: object(ClubService).construct(get('ClubRepository')),
-        ClubRepository: object(ClubRepository).construct(get("fs"), get("JSON_DB_PATH"))
+        ClubRepository: object(ClubRepository).construct(get("mainDatabase"))
     })
 }
 /**
@@ -66,6 +65,5 @@ function configureContainer(){
     addClubModuleDefinitions(container)
     return container
 }
-
 
 module.exports = { configureContainer }
