@@ -1,3 +1,4 @@
+<h5 style="margin: 0 auto; text-align: center; margin-bottom: 25px;">Edit the following form with the team data:</h5>
 <form id="formulario-editar" method="POST" action="/club/edit-team?:id" enctype="multipart/form-data">
   <div class="form-group">
     <label for="nombre">Club name:*</label>
@@ -21,7 +22,7 @@
   </div>
   <div class="form-group">
     <label for="numeroId">Id:*</label>
-    <input type="number" name="numeroId" min="1000" value="{{data.equipo.numeroId}}" readonly class="form-control">
+    <input type="number" name="numeroId" value="{{data.equipo.numeroId}}" readonly class="form-control">
   </div>
   <div class="form-group">
     <label for="telefono">Phone number:*</label>
