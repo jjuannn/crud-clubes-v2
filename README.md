@@ -15,6 +15,10 @@ Run **npm run test** to run the tests.
 
 ## To-do list :
 - [ ] 
+## Features:
+
+- [x] SQLite implemented.
+- [x] New page displayed if the team list is empty.
 
 # Photos: 
 ### Home page:
