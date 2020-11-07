@@ -14,8 +14,3 @@ CREATE TABLE clubes(
     updated_at DATE DEFAULT (datetime('now', 'localtime')) NOT NULL
 )
 
-SELECT * FROM clubes 
-
-/* RESETEA EL AUTOINCREMENT */
-DELETE FROM clubes;
-DELETE FROM sqlite_sequence WHERE NAME='clubes';
