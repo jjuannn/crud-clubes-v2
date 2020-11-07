@@ -14,7 +14,7 @@ Run **npm run dev** to start the app in dev-mode.
 Run **npm run test** to run the tests.
 
 ## To-do list :
-- [ ] Arreglar tests para el controlador ya que fue modificado
+- [ ] 
 
 # Photos: 
 ### Home page:
