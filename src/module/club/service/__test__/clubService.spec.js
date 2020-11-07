@@ -2,7 +2,6 @@ const ClubService = require("../clubService.js")
 const { formToEntity } = require("../../mapper/formToEntity")
 const InvalidIdError = require("../errors/invalidIdError.js")
 const TeamNotMappedError = require("../errors/notMappedError.js")
-const IdInUseError = require("../../repository/errors/idInUseError.js")
 
 const repositoryMock = {
     getById: jest.fn(() => Promise.resolve({})),

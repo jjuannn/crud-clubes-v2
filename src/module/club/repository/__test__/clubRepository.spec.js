@@ -1,135 +1,173 @@
 const { Equipo } = require("../../entities/club")
-const IdInUseError = require("../errors/idInUseError")
 const IdNotFoundError = require("../errors/idNotFoundError")
 const InvalidIdError = require("../errors/invalidIdError")
-const ClubRepository = require("../json/clubRepository")
-const pathMock = "/fake_route/"
+const ClubRepository = require("../sqlite/clubRepository")
+const Sqlite3Database = require("better-sqlite3") 
+const fs = require("fs")
+const { formToEntity } = require("../../mapper/formToEntity")
+const UndefinedError = require("../errors/undefinedError")
+const club = require("../../entities/club")
+let mockDb
 
-const fs = {
-    writeFileSync: jest.fn(() => Promise.resolve()),
-    readFileSync: jest.fn(() => Promise.resolve())
-}
+beforeEach(() => {
+    mockDb = new Sqlite3Database(':memory:');
+    const migration = fs.readFileSync('src/config/setup.sql', 'utf-8');
+    mockDb.exec(migration);
+});
+test("guardar un nuevo equipo genera un nuevo id", async() => {
+    const repository = new ClubRepository(mockDb)
 
-const repository = new ClubRepository(fs, pathMock)
+    const team = {
+        nombre: "Estudiantes",
+        abreviatura: "ELP",
+        estadio: "Jorge Luis Hirschi",
+        direccion: "1 y 57",
+        anoFundacion: "1905",
+        telefono: "123-456-789",
+        website: "estudiantesdelaplata.com",
+        pais: "Argentina",
+        fotoEscudo: "/uploads/test123"
+    }
+    const teamToSave = await repository.saveNewTeam(formToEntity(team))
 
-test("writeDb llama a writeFileSync y se asegura que sea con los parametros", async() => {
-    const content = {}
-    
-    await repository.writeDb(content)
-
-    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
-    expect(fs.writeFileSync).toHaveBeenCalledWith(pathMock, JSON.stringify(content) )
+    expect(teamToSave.numeroId).toEqual("1")
 })
+test("editar un equipo cambia los valores actuales", async() => {
+    const repository = new ClubRepository(mockDb)
 
-test("readData llama a readFileSync y parsea los elementos", async() => {
-    JSON.parse = jest.fn().mockImplementationOnce(() => {});
-    
-    await repository.readData()
+    const newTeam = {
+        nombre: "Estudiantes",
+        abreviatura: "ELP",
+        estadio: "Jorge Luis Hirschi",
+        direccion: "1 y 57",
+        anoFundacion: "1905",
+        telefono: "123-456-789",
+        website: "estudiantesdelaplata.com",
+        pais: "Argentina",
+        fotoEscudo: "/uploads/test123"
+    }
+    let team = await repository.saveNewTeam(formToEntity(newTeam))
 
-    expect(fs.readFileSync).toHaveBeenCalledTimes(1)
-    expect(JSON.parse).toHaveBeenCalledTimes(1)
+    expect(team.numeroId).toEqual("1")
+
+    const editedTeam = {
+        numeroId: "1",
+        nombre: "Boke Juniors",
+        abreviatura: "ELP",
+        estadio: "Jorge Luis Hirschi",
+        direccion: "1 y 57",
+        anoFundacion: "1905",
+        telefono: "123-456-789",
+        website: "estudiantesdelaplata.com",
+        pais: "Argentina",
+        fotoEscudo: "/uploads/test123"
+    }
+
+    team = await repository.saveEditedTeam(formToEntity(editedTeam))
+
+    expect(team.numeroId).toEqual("1")
+    expect(team.nombre).toEqual("Boke Juniors")
 })
-
-test("getAll llama a readData y mapea los elementos", async() => {
-    repository.readData = jest.fn().mockImplementationOnce(() => []);
-    Array.prototype.map = jest.fn().mockImplementationOnce(() => [])
-
-    await repository.getAll()
-
-    expect(repository.readData).toHaveBeenCalledTimes(1)
-    expect(Array.prototype.map).toHaveBeenCalledTimes(1)
-})
-test("falla al intentar llamar a getById con un ID invalido", async() => {
+test("llamar a getById con un ID invalido da error", async() => {
+    const repository = new ClubRepository(mockDb)
     const invalidId = 3
-    try {
+    try{
         await repository.getById(invalidId)
-    } catch (e) {
+    } catch(e){
         expect(e).toBeInstanceOf(InvalidIdError)
     }
 })
-test("falla al no encontrar un equipo con el ID ingresado", async() => {
-    const validId = "3"
-    repository.getAll = jest.fn().mockImplementationOnce(() => Promise.resolve([{},{}]))
+test("llamar a getById correctamente devuelve un equipo", async() => {
+    const repository = new ClubRepository(mockDb)
+    const newTeam = {
+        nombre: "Estudiantes",
+        abreviatura: "ELP",
+        estadio: "Jorge Luis Hirschi",
+        direccion: "1 y 57",
+        anoFundacion: "1905",
+        telefono: "123-456-789",
+        website: "estudiantesdelaplata.com",
+        pais: "Argentina",
+        fotoEscudo: "/uploads/test123"
+    }
+    const savedTeam = await repository.saveNewTeam(formToEntity(newTeam))
 
+    const teamToFind = await repository.getById("1")
+
+    expect(teamToFind).toEqual(savedTeam)
+})
+test("getById no encuentra un equipo con el ID introducido ", async() => {
+    const repository = new ClubRepository(mockDb)
+    let team 
     try{
-        await repository.getById(validId)
+        team = await repository.getById("123123123")
     } catch(e){
-        expect(e).toBeInstanceOf(IdNotFoundError) // preguntar por esta funcion
-    }
-})
-test("prueba correctamente la function getById", async() => {
-    const validId = "3"
-    repository.getAll = jest.fn().mockImplementationOnce(() => Promise.resolve([{id: "3"}]))
-    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => 0)
-
-    const selectedTeam = await repository.getById(validId)
-
-    expect(repository.getAll).toHaveBeenCalledTimes(1)
-    expect(selectedTeam).toBeInstanceOf(Equipo)
-    expect(Array.prototype.findIndex).toHaveBeenCalledTimes(1)
-})
-test("prueba guardar un nuevo equipo correctamente", async() => {
-    const newTeam = new Equipo()
-    Array.prototype.find = jest.fn().mockImplementationOnce(() => false)
-    Array.prototype.push = jest.fn().mockImplementationOnce(() => [{}])
-    repository.getAll = jest.fn().mockImplementationOnce(() => [])
-
-    await repository.saveNewTeam(newTeam)
-
-    expect(Array.prototype.find).toHaveBeenCalledTimes(1)
-    expect(Array.prototype.push).toHaveBeenCalledTimes(1)
-    expect(repository.writeDb).toHaveBeenCalledTimes(1)
-})
-
-test("falla al intentar guardar un nuevo equipo con un ID en uso", async() => {
-    const newTeam = new Equipo()
-    Array.prototype.find = jest.fn().mockImplementationOnce(() => true)
-    repository.getAll = jest.fn().mockImplementationOnce(() => [])
-    try{
-        await repository.saveNewTeam(newTeam)
-    }catch(e){
-        expect(e).toBeInstanceOf(IdInUseError) // corregir este test
-    }
-
-})
-
-test("saveEditedTeam llama a las funciones correspondientes", async() => {
-    repository.getAll = jest.fn().mockImplementationOnce(() => [{name:"team", id: "3", fotoEscudo: "/fake_route/12345"}])
-    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => 0)
-    const editedTeam = {name:"team2", id: "3"}
-    
-    await repository.saveEditedTeam(editedTeam)
-
-    expect(Array.prototype.splice).toHaveBeenCalledTimes(1)
-    expect(Array.prototype.findIndex).toHaveBeenCalledTimes(1)
-    expect(repository.writeDb).toHaveBeenCalledTimes(1)
-})
-test("saveEditedTeam falla al no encontrar el equipo solicitado", async() => {
-    repository.getAll = jest.fn().mockImplementationOnce(() => [])
-    const editedTeam = {}
-    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => -1)
-    try{
-        await repository.saveEditedTeam(editedTeam)
-    }catch(e){
         expect(e).toBeInstanceOf(IdNotFoundError)
     }
+    expect(team).toBeUndefined()
 })
-test("delete se ejecuta correctamente", async() => {
-    repository.getAll = jest.fn().mockImplementationOnce(() => [])
-    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => 0)
-    
-    await repository.delete("3")
-
-    expect(Array.prototype.findIndex).toHaveBeenCalledTimes(1)
-    expect(Array.prototype.splice).toHaveBeenCalledTimes(1)
-    expect(this.writeDb).toHaveBeenCalledTimes(1)
-})
-test("delete falla al no encontrar un equipo con el id introducido", async() => {
-    repository.getAll = jest.fn().mockImplementationOnce(() => [])
-    Array.prototype.findIndex = jest.fn().mockImplementationOnce(() => -1)
-    try {
-        await repository.delete("3")
-    } catch (e) {
-        expect(e).toBeInstanceOf(IdNotFoundError)
+test("llama a delete sin introducir un ID da un error", async() => {
+    const repository = new ClubRepository(mockDb)
+    try{
+        await repository.delete()
+    } catch(e){
+        expect(e).toBeInstanceOf(UndefinedError)
     }
+})
+test("llama a delete correctamente", async () => {
+    const repository = new ClubRepository(mockDb)
+    const newTeam = {
+        nombre: "Estudiantes",
+        abreviatura: "ELP",
+        estadio: "Jorge Luis Hirschi",
+        direccion: "1 y 57",
+        anoFundacion: "1905",
+        telefono: "123-456-789",
+        website: "estudiantesdelaplata.com",
+        pais: "Argentina",
+        fotoEscudo: "/uploads/test123"
+    }
+
+    const savedTeam = await repository.saveNewTeam(formToEntity(newTeam))
+
+    expect(savedTeam.numeroId).toBe("1")
+
+    const deleteTeam = await repository.delete("1")
+
+    expect(deleteTeam).toBe(true)
+})
+test("getAll llama a readDatabase", async() => {
+    const repository = new ClubRepository(mockDb)
+    repository.readDatabase = jest.fn().mockImplementationOnce(() => Promise.resolve())
+
+    repository.getAll()
+    expect(repository.readDatabase).toHaveBeenCalledTimes(1)
+})
+test("readDatabase devuelve false si la database esta vacia", async() => {
+    const repository = new ClubRepository(mockDb)
+
+    const results = await repository.readDatabase()
+
+    expect(results).toBe(false)
+})
+test("getAll devuelve un equipo", async() => {
+    const repository = new ClubRepository(mockDb)
+
+    const newTeam = {
+        nombre: "Estudiantes",
+        abreviatura: "ELP",
+        estadio: "Jorge Luis Hirschi",
+        direccion: "1 y 57",
+        anoFundacion: "1905",
+        telefono: "123-456-789",
+        website: "estudiantesdelaplata.com",
+        pais: "Argentina",
+        fotoEscudo: "/uploads/test123"
+    }
+
+    const savedTeam = await repository.saveNewTeam(formToEntity(newTeam))
+
+    const results = await repository.getAll()
+
+    expect(results).toEqual([savedTeam])
 })
