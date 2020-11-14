@@ -1,17 +1,17 @@
 const { Equipo } = require("../entities/club")
 
-function databaseMapper(team){
+function fromModelToEntity(team){
     const {
         nombre,
         abreviatura,
         estadio,
         direccion,
-        ano_fundacion: anoFundacion,
-        id: numeroId,
+        anoFundacion,
         telefono,
         website,
         pais,
-        foto_escudo: fotoEscudo
+        id,
+        fotoEscudo
     } = team
 
     return new Equipo(
@@ -20,7 +20,7 @@ function databaseMapper(team){
         estadio,
         direccion,
         String(anoFundacion),
-        String(numeroId),
+        Number(id),
         telefono,
         website,
         pais,
@@ -28,4 +28,4 @@ function databaseMapper(team){
     )
 }
 
-module.exports = { databaseMapper }
+module.exports = { fromModelToEntity }

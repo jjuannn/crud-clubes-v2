@@ -20,7 +20,7 @@ function formToEntity(team){
         estadio,
         direccion,
         String(anoFundacion),
-        String(numeroId),
+        Number(numeroId),
         telefono,
         website,
         pais,
