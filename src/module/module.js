@@ -1,6 +1,7 @@
 const ClubController = require("../module/club/controller/clubController")
 const ClubService = require("../module/club/service/clubService")
 const ClubRepository = require("./club/repository/sqlite/clubRepository")
+const ClubModel = require("./club/model/clubModel")
 /**
  * 
  * @param {import("express").Application} app 
@@ -16,5 +17,6 @@ module.exports = {
     initClubModule,
     ClubController,
     ClubService,
-    ClubRepository
+    ClubRepository,
+    ClubModel
 }

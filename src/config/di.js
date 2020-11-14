@@ -1,10 +1,10 @@
 const { default: DIContainer, object, get, factory } = require("rsdi")
-const { ClubController, ClubService, ClubRepository} = require("../module/module");
+const { ClubController, ClubService, ClubRepository, ClubModel} = require("../module/module");
 const bodyParser = require("body-parser")
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const multer = require("multer")
 const session = require("express-session")
-const SQLiteDatabase = require("better-sqlite3")
+const { Sequelize } = require("sequelize")
 
 function configureBodyParser(){
     return urlencodedParser
@@ -21,8 +21,13 @@ function configureSession(){
 
     return session(sessionOptions)
 }
-function configureDatabase(){
-    return new SQLiteDatabase(process.env.DB_PATH)
+function configureSequelizeDatabase(){
+    const sequelize = new Sequelize({
+        dialect: "sqlite",
+        storage: process.env.DB_PATH
+    })
+
+    return sequelize
 }
 function configureMulter(){
 
@@ -36,10 +41,18 @@ function configureMulter(){
  * 
  * @param {DIContainer} container 
  */
+function configureClubModel(container){
+    ClubModel.setup(container.get("Sequelize"))
+    return ClubModel
+}
+/**
+ * 
+ * @param {DIContainer} container 
+ */
 function addCommonDefinitions(container){
     container.addDefinitions({
         bodyParser: factory(configureBodyParser),
-        mainDatabase: factory(configureDatabase),
+        Sequelize: factory(configureSequelizeDatabase),
         multer: factory(configureMulter),
         session: factory(configureSession)
     })
@@ -53,7 +66,8 @@ function addClubModuleDefinitions(container){
     container.addDefinitions({
         ClubController: object(ClubController).construct(get("multer"), get("bodyParser"), get("ClubService")),
         ClubService: object(ClubService).construct(get('ClubRepository')),
-        ClubRepository: object(ClubRepository).construct(get("mainDatabase"))
+        ClubRepository: object(ClubRepository).construct(get("ClubModel")),
+        ClubModel: factory(configureClubModel)
     })
 }
 /**

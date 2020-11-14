@@ -21,6 +21,11 @@ app.set("views", viewsPath)
 
 const container = configureDI.configureContainer()
 
+const mainDb = container.get("Sequelize")
+container.get("ClubModel")
+
+mainDb.sync()
+
 app.use(container.get("session"))
 
 initClubModule(app, container)
