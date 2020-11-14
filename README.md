@@ -14,10 +14,11 @@ Run **npm run dev** to start the app in dev-mode.
 Run **npm run test** to run the tests.
 
 ## To-do list :
-- [ ] 
+- [ ] Add area module. 
 ## Features:
 
 - [x] SQLite implemented.
+- [x] Sequelize implemented.
 - [x] New page displayed if the team list is empty.
 
 # Photos: 
