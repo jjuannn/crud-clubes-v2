@@ -55,9 +55,10 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res 
      */
     async renderEditPage(req, res){
+        const id = Number(req.query.id)
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para editar un equipo")}
         try{
-            const equipo = await this.clubService.getById(req.query.id)
+            const equipo = await this.clubService.getById(id)
             res.render("edit-team", { layout: "layout", data:{ equipo } })
         }catch(e){
             req.session.errors = [e.message]
@@ -119,9 +120,10 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async view(req, res){
+        const id = Number(req.query.id)
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para ver un equipo")}
         try {
-            const team = await this.clubService.getById(req.query.id)
+            const team = await this.clubService.getById(id)
             res.render("view-team", { layout: "layout", data:{ team } })
         } catch (e) {
             req.session.errors = [e.message]
