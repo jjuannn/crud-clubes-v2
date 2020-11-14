@@ -15,6 +15,7 @@ Run **npm run test** to run the tests.
 
 ## To-do list :
 - [ ] Add area module. 
+- [ ] Fix test (when the area module is ready)
 ## Features:
 
 - [x] SQLite implemented.
