@@ -58,7 +58,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
     */
     async getById(id){
         if(typeof id !== "number"){
-            throw new InvalidIdError("El ID introducido no es valido repo")
+            throw new InvalidIdError("El ID introducido no es valido")
         }
         const teamToFind = await this.clubModel.findByPk(id)
 
@@ -89,5 +89,4 @@ module.exports = class ClubRepository extends AbstractClubRepository{
             return teams.map(team => fromModelToEntity(team))
         }   
     }
-    
 }

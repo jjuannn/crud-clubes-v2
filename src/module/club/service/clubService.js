@@ -18,7 +18,7 @@ module.exports = class ClubService{
      */
     async getById(id){
         if(id === undefined || typeof id !== "number"){
-            throw new InvalidIdError("El ID introducido no es valido servi")
+            throw new InvalidIdError("El ID introducido no es valido")
         }
         
         return this.clubRepository.getById(id)
