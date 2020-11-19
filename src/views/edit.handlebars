@@ -1,0 +1,66 @@
+{{#if data.team}}
+<h5 style="margin: 0 auto; text-align: center; margin-bottom: 25px;">Edit the following form with the team data:</h5>
+<form id="formulario-editar" method="POST" action="/club/edit-team?:id" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="nombre">Club name:*</label>
+    <input type="text" name="nombre" class="form-control" value="{{data.team.nombre}}" required>
+  </div>
+  <div class="form-group">
+    <label for="tla">TLA:*</label>
+    <input type="text" name="abreviatura" class="form-control" value="{{data.team.abreviatura}}" required>
+  </div>
+  <div class="form-group">
+    <label for="estadio">Stadium:*</label>
+    <input type="text" name="estadio" class="form-control" value="{{data.team.estadio}}" required>
+  </div>
+  <div class="form-group">
+    <label for="direccion">Address:*</label>
+    <input type="text" name="direccion" class="form-control" value="{{data.team.direccion}}" required>
+  </div>
+  <div class="form-group">
+    <label for="fundacion">Foundation year:*</label>
+    <input type="number" min="1860" max="2020" name="anoFundacion" class="form-control" value="{{data.team.anoFundacion}}" required>
+  </div>
+  <div class="form-group">
+    <label for="numeroId">Id:*</label>
+    <input type="number" name="numeroId" value="{{data.team.numeroId}}" readonly class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="telefono">Phone number:*</label>
+    <input  name="telefono" class="form-control" value="{{data.team.telefono}}" required>
+  </div>
+  <div class="form-group">
+    <label for="website">Website: *</label>
+    <input type="text" class="form-control" name="website" value="{{data.team.website}}" required>
+  </div>
+  <div class="form-group">
+    <label for="pais">Area:*</label>
+    <input type="text" class="form-control" name="pais" value="{{data.team.pais}}" required>
+  </div>
+  <div class="form-group">
+      <label for="imagen">CrestURL:*</label>
+      <input type="file" class="form-control" text="Seleccionar escudo" name="fotoEscudo">
+  </div>
+  <p>*Required field</p>
+  <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+  <a class="btn btn-danger" href="/club"><i class="fas fa-times"></i> Discard changes</a>
+</form>
+{{/if}}
+
+{{#if data.area}}
+  <h5 style="margin: 0 auto; text-align: center; margin-bottom: 25px;">Edit the following form with the team data:</h5>
+  <form id="formulario-editar" method="POST" action="/area/edit-area?:id" enctype="application/x-www-form-urlencoded">
+    <div class="form-group">
+      <label for="nombre">Nombre:*</label>
+      <input type="text" class="form-control" name="nombre" value={{data.area.nombre}}>
+    </div>
+    <div class="form-group">
+    <label for="id">Id:*</label>
+    <input type="number" name="id" value="{{data.area.id}}" readonly class="form-control">
+  </div>
+    <p>*Required field</p>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+    <a class="btn btn-danger" href="/area"><i class="fas fa-times"></i> Discard changes</a>
+
+  </form>
+{{/if}}

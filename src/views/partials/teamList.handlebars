@@ -1,0 +1,24 @@
+<div id="container">
+    {{#each listaEquipos as |equipo|}}
+    <div class="card carta">
+        <img src="{{equipo.fotoEscudo}}" class="card-img-top escudoCarta">
+        <div class="card-body">
+            <h5 class="card-title">{{equipo.nombre}}</h5>
+            <div>
+                <form class="action-form"method="GET" action="/club/view-team">
+                    <input type="hidden" name="id" value="{{equipo.numeroId}}">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                </form>
+                <form class="action-form" method="GET" action="/club/edit-team">
+                    <input type="hidden" name="id" value="{{equipo.numeroId}}">
+                    <button type="submit" class="btn btn-warning"><i class="fas fa-pen-square"></i></button>
+                </form>
+                <form class="action-form" method="GET" action="/club/delete-team">
+                    <input type="hidden" name="id" value="{{equipo.numeroId}}">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>
