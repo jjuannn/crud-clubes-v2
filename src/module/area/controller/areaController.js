@@ -73,9 +73,6 @@ module.exports = class AreaController extends abstractController{
      */
     async saveEditedArea(req, res){
         const editedArea = formMapper.formToEntity(req.body)
-        console.log(req.body)
-        console.log(editedArea)
-
         try{
             this.areaService.saveEditedArea(editedArea)
             req.session.messages = [`El equipo con ID ${editedArea.numeroId} se edito correctamente`]
@@ -126,7 +123,6 @@ module.exports = class AreaController extends abstractController{
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para ver un equipo")}
         try {
             const area = await this.areaService.getById(id)
-            console.log(area)
             res.render("view", { layout: "layout", data:{ area } })
         } catch (e) {
             req.session.errors = [e.message]

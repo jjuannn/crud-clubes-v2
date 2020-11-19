@@ -40,7 +40,8 @@ module.exports = class ClubController extends abstractController{
      */
 
     async renderAddPage(req, res){
-        res.render("add-team", { layout: "layout" })
+        const isTeam = true
+        res.render("add", { layout: "layout", data:{ isTeam } })
     }
     /**
      * @param {import("express").Request} req
@@ -58,8 +59,8 @@ module.exports = class ClubController extends abstractController{
         const id = Number(req.query.id)
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para editar un equipo")}
         try{
-            const equipo = await this.clubService.getById(id)
-            res.render("edit-team", { layout: "layout", data:{ equipo } })
+            const team = await this.clubService.getById(id)
+            res.render("edit", { layout: "layout", data:{ team } })
         }catch(e){
             req.session.errors = [e.message]
             res.redirect("/club")
@@ -107,7 +108,7 @@ module.exports = class ClubController extends abstractController{
         const teamsResponse = await this.clubService.getAll()        
         const { errors, messages } = req.session;
         if(teamsResponse === false){
-            res.render("empty-list", { layout: "layout", data:{ teamsResponse, errors, messages } })
+            res.render("empty-team-list", { layout: "layout", data:{ teamsResponse, errors, messages } })
         } else {
             res.render("main", { layout: "layout", data:{ teamsResponse, errors, messages } })
         }
@@ -124,7 +125,7 @@ module.exports = class ClubController extends abstractController{
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para ver un equipo")}
         try {
             const team = await this.clubService.getById(id)
-            res.render("view-team", { layout: "layout", data:{ team } })
+            res.render("view", { layout: "layout", data:{ team } })
         } catch (e) {
             req.session.errors = [e.message]
             res.redirect("/club")
