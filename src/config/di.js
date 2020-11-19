@@ -1,5 +1,6 @@
 const { default: DIContainer, object, get, factory } = require("rsdi")
-const { ClubController, ClubService, ClubRepository, ClubModel} = require("../module/module");
+const { ClubController, ClubService, ClubRepository, ClubModel } = require("../module/club/module");
+const { AreaController, AreaService, AreaRepository, AreaModel } = require("../module/area/module") 
 const bodyParser = require("body-parser")
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const multer = require("multer")
@@ -43,7 +44,14 @@ function configureMulter(){
  */
 function configureClubModel(container){
     ClubModel.setup(container.get("Sequelize"))
+   // ClubModel.setupAssociations(container.get("AreaModel"))
     return ClubModel
+}/**
+ * 
+ * @param {DIContainer} container 
+ */
+function configureAreaModel(container){
+    return AreaModel.setup(container.get("Sequelize"))
 }
 /**
  * 
@@ -71,11 +79,24 @@ function addClubModuleDefinitions(container){
     })
 }
 /**
+ * 
+ * @param {DIContainer} container 
+ */
+function addAreaModuleDefinitions(container){
+    container.addDefinitions({
+        AreaController:object(AreaController).construct(get("bodyParser"), get("AreaService")),
+        AreaService: object(AreaService).construct(get("AreaRepository")),
+        AreaRepository: object(AreaRepository).construct(get("AreaModel")),
+        AreaModel: factory(configureAreaModel)
+    })
+}
+/**
  * @returns {DIContainer}
  */
 function configureContainer(){
     const container = new DIContainer()
     addCommonDefinitions(container)
+    addAreaModuleDefinitions(container)
     addClubModuleDefinitions(container)
     return container
 }
