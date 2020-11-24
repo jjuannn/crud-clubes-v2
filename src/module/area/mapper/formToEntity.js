@@ -6,10 +6,10 @@ function formToEntity(area){
         id
     } = area
 
-    return new Area(
-        nombre,
-        Number(id)
-    )
+    return new Area({
+        id: Number(id), 
+        nombre 
+    })
 
 }
 module.exports = { formToEntity }
