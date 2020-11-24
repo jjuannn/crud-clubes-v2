@@ -44,7 +44,7 @@ function configureMulter(){
  */
 function configureClubModel(container){
     ClubModel.setup(container.get("Sequelize"))
-   // ClubModel.setupAssociations(container.get("AreaModel"))
+    ClubModel.setupAssociations(container.get("AreaModel"))
     return ClubModel
 }/**
  * 
@@ -72,9 +72,9 @@ function addCommonDefinitions(container){
  */
 function addClubModuleDefinitions(container){
     container.addDefinitions({
-        ClubController: object(ClubController).construct(get("multer"), get("bodyParser"), get("ClubService")),
+        ClubController: object(ClubController).construct(get("multer"), get("bodyParser"), get("ClubService"), get("AreaService")),
         ClubService: object(ClubService).construct(get('ClubRepository')),
-        ClubRepository: object(ClubRepository).construct(get("ClubModel")),
+        ClubRepository: object(ClubRepository).construct(get("ClubModel"), get("AreaModel")),
         ClubModel: factory(configureClubModel)
     })
 }
