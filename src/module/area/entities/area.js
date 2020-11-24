@@ -1,5 +1,5 @@
 class Area{
-    constructor(nombre, id){
+    constructor({id, nombre}){
         this.nombre = nombre
         this.id = id
     }
