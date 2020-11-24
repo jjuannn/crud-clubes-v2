@@ -8,9 +8,10 @@ const club = require("../../entities/club.js")
 
 module.exports = class ClubRepository extends AbstractClubRepository{
 
-    constructor(clubModel){
+    constructor(clubModel, areaModel){
         super()
         this.clubModel = clubModel
+        this.areaModel = areaModel
     }
     /**
      * 
@@ -20,7 +21,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         if(!editedTeam){
             throw new UndefinedError("No se pudo editar el equipo ya que no hay uno")
         }
-        const currentId = editedTeam.numeroId
+        const currentId = editedTeam.id
 
         const newValues = {
             nombre: editedTeam.nombre,
@@ -30,12 +31,14 @@ module.exports = class ClubRepository extends AbstractClubRepository{
             anoFundacion: editedTeam.anoFundacion,
             telefono: editedTeam.telefono,
             website: editedTeam.website,
-            pais: editedTeam.pais,
+            area_id: editedTeam.area_id,
         } = editedTeam
+
         if(editedTeam.fotoEscudo){
             newValues.fotoEscudo = editedTeam.fotoEscudo
         }
-        const teamToSave = await this.clubModel.update(newValues, { where: {id : currentId}})
+        const buildOptions = { where: {id : currentId}, incluide: this.areaModel}
+        const teamToSave = await this.clubModel.update(newValues, buildOptions)
 
         return this.getById(currentId)
     }
@@ -47,11 +50,14 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         if(!newTeam){
             throw new UndefinedError("No se pudo agregar el equipo ya que no hay uno")
         }
+        
         let clubModel
-        const buildOptions = { isNewRecord: true }
-        clubModel = await this.clubModel.create(newTeam, buildOptions)
+        const buildOptions = { isNewRecord: true, incluide: this.areaModel }
+        clubModel = await this.clubModel.build(newTeam, buildOptions)
+        clubModel.setDataValue("area_id", newTeam.area_id.id)
+        clubModel = await clubModel.save()
 
-        return fromModelToEntity(clubModel)
+        return true
     }
     /**
      * @param {Number} id
@@ -60,9 +66,13 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         if(typeof id !== "number"){
             throw new InvalidIdError("El ID introducido no es valido")
         }
-        const teamToFind = await this.clubModel.findByPk(id)
 
-        return fromModelToEntity(teamToFind)
+        const teamToFind = await this.clubModel.findOne({
+            where: { id },
+            include: this.areaModel,
+        })
+
+        return await fromModelToEntity(teamToFind)
     }
 
     /**

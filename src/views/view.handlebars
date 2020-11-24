@@ -1,0 +1,30 @@
+{{#if data.team}}
+<div class="card text-center" style="width: 60%; margin: 0 auto;"  class="view-card">
+    <div class="card-header">
+      <img src="{{data.team.fotoEscudo}}" id="escudo" style="width: 100px; height: 100px;">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">CLUB NAME: {{data.team.nombre}}</h5>
+      <h5 class="card-title">TLA:  {{data.team.abreviatura}}</h5>
+      <h5 class="card-title">STADIUM:  {{data.team.estadio}}</h5>
+      <h5 class="card-title">ADDRESS:  {{data.team.direccion}}</h5>
+      <h5 class="card-title">AREA:  {{data.team.Area.nombre}}</h5>
+      <h5 class="card-title">FOUNDATION YEAR:  {{data.team.anoFundacion}}</h5>
+      <h5 class="card-title">ID:  {{data.team.id}}</h5>
+      <h5 class="card-title">PHONE NUMBER:  {{data.team.telefono}}</h5>
+      <h5 class="card-title">WEBSITE:  {{data.team.website}}</h5>
+      <a href="/club" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Return to team list</a>
+    </div>
+</div>
+{{/if}}
+
+{{#if data.area}}
+  <div class="card text-center" style="width: 60%; margin: 0 auto;"  class="view-card">
+    <div class="card-body">
+      <h5 class="card-title">AREA NAME: {{data.area.nombre}}</h5>
+      <h5 class="card-title">ID:  {{data.area.id}}</h5>
+      <a href="/area" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Return to area list</a>
+    </div>
+</div>
+
+{{/if}}

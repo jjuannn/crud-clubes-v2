@@ -1,0 +1,23 @@
+<div id="container">
+    {{#each listaAreas as |area|}}
+    <div class="card carta-area">
+        <div class="card-body">
+            <h5 class="card-title">{{area.nombre}}</h5>
+            <div>
+                <form class="action-form"method="GET" action="/area/view-area">
+                    <input type="hidden" name="id" value="{{area.id}}">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                </form>
+                <form class="action-form" method="GET" action="/area/edit-area">
+                    <input type="hidden" name="id" value="{{area.id}}">
+                    <button type="submit" class="btn btn-warning"><i class="fas fa-pen-square"></i></button>
+                </form>
+                <form class="action-form" method="GET" action="/area/delete-area">
+                    <input type="hidden" name="id" value="{{area.id}}">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

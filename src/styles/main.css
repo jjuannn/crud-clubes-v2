@@ -2,18 +2,26 @@ body{
     margin-bottom: 50px;
     background-color: whitesmoke;
 }
-.div-title{
-    text-align: center;
-}
 #title{
     font-family: 'Ubuntu', sans-serif;    
     margin-left: auto;
     margin-right: auto;
     padding: 9px;
 }
+.main-header{
+    background: whitesmoke;
+    text-align: center;
+    list-style: none;
+    display: inline-block;
+}
+.nav-item{
+    margin-left: 10px;
+}
 .add-team-btn-div{
     text-align: center;
     padding: 10px;
+    margin: auto;
+    display: inline-block;
 }
 .home-div{
     padding-top: 80px;

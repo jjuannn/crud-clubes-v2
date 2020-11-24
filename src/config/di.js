@@ -1,5 +1,6 @@
 const { default: DIContainer, object, get, factory } = require("rsdi")
-const { ClubController, ClubService, ClubRepository, ClubModel} = require("../module/module");
+const { ClubController, ClubService, ClubRepository, ClubModel } = require("../module/club/module");
+const { AreaController, AreaService, AreaRepository, AreaModel } = require("../module/area/module") 
 const bodyParser = require("body-parser")
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const multer = require("multer")
@@ -43,7 +44,14 @@ function configureMulter(){
  */
 function configureClubModel(container){
     ClubModel.setup(container.get("Sequelize"))
+    ClubModel.setupAssociations(container.get("AreaModel"))
     return ClubModel
+}/**
+ * 
+ * @param {DIContainer} container 
+ */
+function configureAreaModel(container){
+    return AreaModel.setup(container.get("Sequelize"))
 }
 /**
  * 
@@ -64,10 +72,22 @@ function addCommonDefinitions(container){
  */
 function addClubModuleDefinitions(container){
     container.addDefinitions({
-        ClubController: object(ClubController).construct(get("multer"), get("bodyParser"), get("ClubService")),
+        ClubController: object(ClubController).construct(get("multer"), get("bodyParser"), get("ClubService"), get("AreaService")),
         ClubService: object(ClubService).construct(get('ClubRepository')),
-        ClubRepository: object(ClubRepository).construct(get("ClubModel")),
+        ClubRepository: object(ClubRepository).construct(get("ClubModel"), get("AreaModel")),
         ClubModel: factory(configureClubModel)
+    })
+}
+/**
+ * 
+ * @param {DIContainer} container 
+ */
+function addAreaModuleDefinitions(container){
+    container.addDefinitions({
+        AreaController:object(AreaController).construct(get("bodyParser"), get("AreaService")),
+        AreaService: object(AreaService).construct(get("AreaRepository")),
+        AreaRepository: object(AreaRepository).construct(get("AreaModel")),
+        AreaModel: factory(configureAreaModel)
     })
 }
 /**
@@ -76,6 +96,7 @@ function addClubModuleDefinitions(container){
 function configureContainer(){
     const container = new DIContainer()
     addCommonDefinitions(container)
+    addAreaModuleDefinitions(container)
     addClubModuleDefinitions(container)
     return container
 }

@@ -1,4 +1,5 @@
 const { Equipo } = require("../entities/club")
+const { Area } = require("../../area/entities/area")
 
 function formToEntity(team){
     const {
@@ -7,25 +8,25 @@ function formToEntity(team){
         estadio,
         direccion,
         anoFundacion,
-        numeroId,
+        id,
         telefono,
         website,
-        pais,
-        fotoEscudo
+        fotoEscudo,
+        area_id
     } = team
 
-    return new Equipo(
+    return new Equipo({
         nombre,
         abreviatura,
         estadio,
         direccion,
-        String(anoFundacion),
-        Number(numeroId),
+        anoFundacion: String(anoFundacion),
+        id: Number(id),
         telefono,
         website,
-        pais,
+        area_id: Number(area_id),
         fotoEscudo
-    )
+    })
 
 }
 module.exports = { formToEntity }

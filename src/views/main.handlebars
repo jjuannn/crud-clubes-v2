@@ -1,0 +1,24 @@
+{{#if data.teamsResponse}}
+    <div id="buttons-options" style="text-align: center;">
+    <div class="add-team-btn-div">
+        <form id="agregar-equipo" style="display:inline-block" method="GET" action="/club/add-team">
+            <button type="submit" class="btn btn-primary" ><i class="fas fa-plus-square"></i> Add team </button>
+        </form>
+    </div>
+</div>
+{{/if}}
+    
+{{#if data.areaResponse}}
+    <div id="buttons-options" style="text-align: center;">
+    <div class="add-team-btn-div">
+        <form id="agregar-area" style="display:inline-block" method="GET" action="/area/add-area">
+            <button type="submit" class="btn btn-success" ><i class="fas fa-plus-square"></i> Add area </button>
+        </form>
+    </div>
+</div>
+{{/if}}
+
+{{>errors errores=data.errors}}
+{{>errors mensajes=data.messages}}
+{{>teamList listaEquipos=data.teamsResponse}}
+{{>areaList listaAreas=data.areaResponse}}

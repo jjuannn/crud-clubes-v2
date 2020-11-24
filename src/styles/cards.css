@@ -19,6 +19,15 @@
     max-height: 190px;
     min-height: 190px; 
 }
+.carta-area{
+    text-align: center;
+    display: inline-block;
+    margin: 5px;
+    width: 18rem;
+    padding-top: 5px;
+    max-height: 130px;
+    min-height: 130px; 
+}
 .carta:hover{
     box-shadow: 0px 7px 10px -5px rgba(0,0,0,0.75);
     cursor: pointer;

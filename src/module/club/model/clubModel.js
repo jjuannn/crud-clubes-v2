@@ -32,12 +32,9 @@ module.exports = class ClubModel extends Model{
           telefono: {
                 type: DataTypes.STRING
                }, 
-           website: {
+          website: {
                 type: DataTypes.STRING
                }, 
-          pais: {
-                type: DataTypes.STRING
-               },
           fotoEscudo: {
                type: DataTypes.STRING
           },
@@ -58,7 +55,7 @@ module.exports = class ClubModel extends Model{
         return ClubModel
     }
 
-    // static setupAssociations(AreaModel){
-    //     ClubModel.belongsTo(AreaModel, {foreignKey: "area_id"})
-    // }
+    static setupAssociations(AreaModel){
+        ClubModel.belongsTo(AreaModel, {foreignKey: "area_id"})
+    }
 }
