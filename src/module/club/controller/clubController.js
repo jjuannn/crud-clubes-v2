@@ -44,11 +44,11 @@ module.exports = class ClubController extends abstractController{
         const isTeam = true
         const areas = await this.areaService.getAll()
 
-        if(areas.length === 0){
+        if(areas.length > 0){
+            res.render("add", { layout: "layout", data:{ isTeam, areas} })
+        } else{
             req.session.errors = ["Debes crear un area primero"]
             res.redirect("/club")
-        } else{
-            res.render("add", { layout: "layout", data:{ isTeam, areas} })
         }
     }
     /**
@@ -101,7 +101,7 @@ module.exports = class ClubController extends abstractController{
         if(req.file){newTeam.fotoEscudo = `/uploads/${req.file.filename}`}
         try{
             await this.clubService.saveNewTeam(newTeam)
-            req.session.messages = [`El equipo con ID ${newTeam.id} se agrego correctamente`]
+            req.session.messages = [`El equipo ${newTeam.nombre} se agrego correctamente`]
             res.redirect("/club")
         }catch(e){
             req.session.errors = [e.message]

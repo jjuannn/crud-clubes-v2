@@ -1,5 +1,5 @@
 const abstractController = require("./abstractController.js")
-const formMapper = require("../mapper/formToEntity.js")
+const { formToEntity } = require("../mapper/formToEntity.js")
 const UndefinedIdError = require("./errors/undefinedError.js")
 const area = require("../entities/area.js")
 
@@ -72,8 +72,7 @@ module.exports = class AreaController extends abstractController{
      * @param {import("express").Request} req
      */
     async saveEditedArea(req, res){
-        const editedArea = formMapper.formToEntity(req.body)
-
+        const editedArea = formToEntity(req.body)
         try{
             this.areaService.saveEditedArea(editedArea)
             req.session.messages = [`El area con ID ${editedArea.id} se edito correctamente`]
@@ -88,10 +87,10 @@ module.exports = class AreaController extends abstractController{
      * @param {import("express").Response} res
      */
     async saveNewArea(req, res){
-        const newArea = formMapper.formToEntity(req.body)
+        const newArea = formToEntity(req.body)
         try{
             await this.areaService.saveNewArea(newArea)
-            req.session.messages = [`El area con ID ${newArea.id} se agrego correctamente`]
+            req.session.messages = [`El area ${newArea.nombre} se agrego correctamente`]
             res.redirect("/area")
         }catch(e){
             req.session.errors = [e.message]
