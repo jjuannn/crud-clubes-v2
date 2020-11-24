@@ -101,7 +101,7 @@ module.exports = class ClubController extends abstractController{
         if(req.file){newTeam.fotoEscudo = `/uploads/${req.file.filename}`}
         try{
             await this.clubService.saveNewTeam(newTeam)
-            req.session.messages = [`El equipo con ID ${newTeam.id} se agrego correctamente`]
+            req.session.messages = [`El equipo ${newTeam.nombre} se agrego correctamente`]
             res.redirect("/club")
         }catch(e){
             req.session.errors = [e.message]
