@@ -14,8 +14,8 @@ Run **npm run dev** to start the app in dev-mode.
 Run **npm run test** to run the tests.
 
 ## To-do list :
-- [ ] Finish setup between area and club module. 
-- [ ] Fix test (when the area module is ready)
+- [ ] Fix "area" field when editing a team. 
+- [ ] Fix tests
 ## Features:
 
 - [x] SQLite implemented.
