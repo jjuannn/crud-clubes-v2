@@ -1,5 +1,5 @@
 const abstractController = require("./abstractController.js")
-const formMapper = require("../mapper/formToEntity.js")
+const { formToEntity } = require("../mapper/formToEntity.js")
 const UndefinedIdError = require("./errors/undefinedError.js")
 
 module.exports = class ClubController extends abstractController{
@@ -7,12 +7,13 @@ module.exports = class ClubController extends abstractController{
      * 
      * @param {import("../service/clubService.js")} clubService 
      */
-    constructor(uploadMiddleware, bodyParser, clubService){
+    constructor(uploadMiddleware, bodyParser, clubService, areaService){
         super()
         this.ROUTE_BASE = "/club" 
         this.uploadMiddleware = uploadMiddleware
         this.bodyParser = bodyParser
         this.clubService = clubService
+        this.areaService = areaService
     }
 
     /**
@@ -41,7 +42,14 @@ module.exports = class ClubController extends abstractController{
 
     async renderAddPage(req, res){
         const isTeam = true
-        res.render("add", { layout: "layout", data:{ isTeam } })
+        const areas = await this.areaService.getAll()
+
+        if(areas.length === 0){
+            req.session.errors = ["Debes crear un area primero"]
+            res.redirect("/club")
+        } else{
+            res.render("add", { layout: "layout", data:{ isTeam, areas} })
+        }
     }
     /**
      * @param {import("express").Request} req
@@ -60,7 +68,8 @@ module.exports = class ClubController extends abstractController{
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para editar un equipo")}
         try{
             const team = await this.clubService.getById(id)
-            res.render("edit", { layout: "layout", data:{ team } })
+            const areas = await this.areaService.getAll()
+            res.render("edit", { layout: "layout", data:{ team, areas } })
         }catch(e){
             req.session.errors = [e.message]
             res.redirect("/club")
@@ -72,11 +81,11 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req
      */
     async saveEditedTeam(req, res){
-        const editedTeam = formMapper.formToEntity(req.body)
+        const editedTeam = formToEntity(req.body)
         if(req.file){editedTeam.fotoEscudo = `/uploads/${req.file.filename}`}
         try{
             this.clubService.saveEditedTeam(editedTeam)
-            req.session.messages = [`El equipo con ID ${editedTeam.numeroId} se edito correctamente`]
+            req.session.messages = [`El equipo con ID ${editedTeam.id} se edito correctamente`]
             res.redirect("/club")
         }catch(e){
             req.session.errors = [e.message]
@@ -88,11 +97,11 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res
      */
     async saveNewTeam(req, res){
-        const newTeam = formMapper.formToEntity(req.body)
+        const newTeam = formToEntity(req.body)
         if(req.file){newTeam.fotoEscudo = `/uploads/${req.file.filename}`}
         try{
             await this.clubService.saveNewTeam(newTeam)
-            req.session.messages = [`El equipo ${newTeam.nombre} se agrego correctamente`]
+            req.session.messages = [`El equipo con ID ${newTeam.id} se agrego correctamente`]
             res.redirect("/club")
         }catch(e){
             req.session.errors = [e.message]
@@ -105,7 +114,7 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Request} req 
      */
     async index(req , res){
-        const teamsResponse = await this.clubService.getAll()        
+        const teamsResponse = await this.clubService.getAll()
         const { errors, messages } = req.session;
         if(teamsResponse === false){
             res.render("empty-team-list", { layout: "layout", data:{ teamsResponse, errors, messages } })
