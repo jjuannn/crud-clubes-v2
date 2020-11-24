@@ -73,9 +73,10 @@ module.exports = class AreaController extends abstractController{
      */
     async saveEditedArea(req, res){
         const editedArea = formMapper.formToEntity(req.body)
+
         try{
             this.areaService.saveEditedArea(editedArea)
-            req.session.messages = [`El equipo con ID ${editedArea.numeroId} se edito correctamente`]
+            req.session.messages = [`El area con ID ${editedArea.id} se edito correctamente`]
             res.redirect("/area")
         }catch(e){
             req.session.errors = [e.message]
@@ -90,7 +91,7 @@ module.exports = class AreaController extends abstractController{
         const newArea = formMapper.formToEntity(req.body)
         try{
             await this.areaService.saveNewArea(newArea)
-            req.session.messages = [`El equipo ${newArea.nombre} se agrego correctamente`]
+            req.session.messages = [`El area con ID ${newArea.id} se agrego correctamente`]
             res.redirect("/area")
         }catch(e){
             req.session.errors = [e.message]

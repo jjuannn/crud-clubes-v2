@@ -32,7 +32,6 @@ module.exports = class AreaService{
         if(!(newArea instanceof Area)){
             throw new NotMappedError("area-not-mapped")
         }
-        
         return this.areaRepository.saveNewArea(newArea)
     }
 
@@ -44,7 +43,6 @@ module.exports = class AreaService{
         if(!(editedArea instanceof Area)){
             throw new NotMappedError("area-not-mapped")
         }
-
         return this.areaRepository.saveEditedArea(editedArea)  
     }
 

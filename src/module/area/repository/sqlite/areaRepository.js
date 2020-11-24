@@ -25,7 +25,7 @@ module.exports = class AreaRepository extends AbstractAreaRepository{
         const newValues = {
             nombre: editedArea.nombre
         } = editedArea
-
+        
         const areaToSave = await this.areaModel.update(newValues, { where: {id : currentId}})
 
         return this.getById(currentId)
