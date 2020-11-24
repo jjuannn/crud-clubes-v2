@@ -22,8 +22,8 @@
     <input type="number" min="1860" max="2020" name="anoFundacion" class="form-control" value="{{data.team.anoFundacion}}" required>
   </div>
   <div class="form-group">
-    <label for="numeroId">Id:*</label>
-    <input type="number" name="numeroId" value="{{data.team.numeroId}}" readonly class="form-control">
+    <label for="id">Id:*</label>
+    <input type="number" name="id" value="{{data.team.id}}" readonly class="form-control">
   </div>
   <div class="form-group">
     <label for="telefono">Phone number:*</label>
@@ -34,8 +34,12 @@
     <input type="text" class="form-control" name="website" value="{{data.team.website}}" required>
   </div>
   <div class="form-group">
-    <label for="pais">Area:*</label>
-    <input type="text" class="form-control" name="pais" value="{{data.team.pais}}" required>
+    <label for="area_id">Area:*</label>
+    <select name="area_id" class="form-control">
+      {{#each data.areas as |area|}}
+        <option value={{area.id}}>{{area.nombre}}</option>
+      {{/each}}
+    </select>
   </div>
   <div class="form-group">
       <label for="imagen">CrestURL:*</label>
