@@ -15,6 +15,7 @@ app.use(express.static(__dirname + '/styles'))
 const viewsPath = path.join(__dirname, "/views")
 
 const expHandlebars = require ("express-handlebars")
+//const hbsHelpers = require("handlebars-helpers")()
 const hbs = expHandlebars.create()
 
 app.engine("handlebars", hbs.engine)
