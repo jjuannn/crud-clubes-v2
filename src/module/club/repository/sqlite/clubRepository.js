@@ -54,7 +54,7 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         let clubModel
         const buildOptions = { isNewRecord: true, incluide: this.areaModel }
         clubModel = await this.clubModel.build(newTeam, buildOptions)
-        clubModel.setDataValue("area_id", newTeam.area_id.id)
+        clubModel.setDataValue("area_id", newTeam.area_id)
         clubModel = await clubModel.save()
 
         return true
