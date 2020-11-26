@@ -50,14 +50,13 @@ module.exports = class ClubRepository extends AbstractClubRepository{
         if(!newTeam){
             throw new UndefinedError("No se pudo agregar el equipo ya que no hay uno")
         }
-        
         let clubModel
         const buildOptions = { isNewRecord: true, incluide: this.areaModel }
         clubModel = await this.clubModel.build(newTeam, buildOptions)
         clubModel.setDataValue("area_id", newTeam.area_id)
         clubModel = await clubModel.save()
 
-        return true
+        return fromModelToEntity(clubModel)
     }
     /**
      * @param {Number} id
@@ -72,6 +71,9 @@ module.exports = class ClubRepository extends AbstractClubRepository{
             include: this.areaModel,
         })
 
+        if(!teamToFind){
+            throw new IdNotFoundError("No se encontro un equipo con el ID introducido")
+        }
         return await fromModelToEntity(teamToFind)
     }
 
