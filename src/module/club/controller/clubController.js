@@ -145,10 +145,11 @@ module.exports = class ClubController extends abstractController{
      * @param {import("express").Response} res
      */
     async delete(req, res){
+        const id = Number(req.query.id)
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para borrar un equipo")}
         try{
-            await this.clubService.delete(req.query.id)
-            req.session.messages = [`El club con ID ${req.query.id} se borro correctamente`];
+            await this.clubService.delete(id)
+            req.session.messages = [`El club con ID ${id} se borro correctamente`];
         }catch(e){
             req.session.errors = [e.message]
         }
