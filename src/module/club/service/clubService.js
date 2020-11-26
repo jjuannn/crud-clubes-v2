@@ -31,7 +31,7 @@ module.exports = class ClubService{
         if(!(newTeam instanceof Equipo)){
             throw new NotMappedError("team-not-mapped")
         }
-
+        
         return this.clubRepository.saveNewTeam(newTeam)
     }
 
