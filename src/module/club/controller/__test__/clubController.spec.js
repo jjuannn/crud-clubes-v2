@@ -2,6 +2,7 @@ const { Equipo } = require("../../entities/club")
 const ClubController = require("../clubController.js")
 const { formToEntity } = require("../../mapper/formToEntity")
 const UndefinedIdError = require("../errors/undefinedError.js")
+const area = require("../../../area/entities/area")
 
 const service = {
     getById: jest.fn( () => Promise.resolve({})),
@@ -11,20 +12,27 @@ const service = {
     saveNewTeam: jest.fn()
 }
 
-const controller = new ClubController({}, {}, service)
+const areaService = {
+    getById: jest.fn( () => Promise.resolve({})),
+    getAll: jest.fn( () => Promise.resolve([])),
+    delete: jest.fn( () => Promise.resolve({})),
+    saveEditedArea: jest.fn(),
+    saveNewArea: jest.fn()
+}
+const controller = new ClubController({}, {}, service, areaService)
 
 const exampleBodyMock = {
-    nombre: "Estudiantes",
-    abreviatura: "ELP",
-    estadio: "Jorge Luis Hirschi",
-    direccion: "1 y 57",
-    anoFundacion: 1905,
-    numeroId: 7777,
-    telefono: "123-456-789",
-    website: "estudiantesdelaplata.com",
-    pais: "Argentina",
+    nombre: 'Arsenal FC',
+    abreviatura: 'ARS',
+    estadio: 'Emirates Stadium',
+    direccion: '75 Drayton Park London N5 1BU',
+    anoFundacion: '1889',
+    telefono: '+44 (01273) 878288',
+    website: 'http://www.arsenal.com',
+    area_id: '37',
     fotoEscudo: "/uploads/test123"
 }
+
 
 test("renderHomePage se ejecuta correctamente", async () => {
     const renderMock = jest.fn()
@@ -57,28 +65,49 @@ test("index renderea la pagina empty-list si es que no hay equipos", async() => 
     await controller.index(req, {render: renderMock})
     
     expect(renderMock).toHaveBeenCalledTimes(1)
-    expect(renderMock).toHaveBeenCalledWith("empty-list", { layout: "layout", data:{ teamsResponse, errors, messages } })
+    expect(renderMock).toHaveBeenCalledWith("empty-team-list", { layout: "layout", data:{ teamsResponse, errors, messages } })
 })
-test("renderAddPage se ejecuta correctamente", async () => {
+test("renderAddPage se ejecuta correctamente si hay equipos", async () => {
     const renderMock = jest.fn()
+    const isTeam = true
+    const areas = [{}, {}]
+
+    areaService.getAll.mockImplementationOnce(() => Promise.resolve(areas))
 
     await controller.renderAddPage({}, {render: renderMock})
 
+    expect(areaService.getAll).toHaveBeenCalledTimes(1)
     expect(renderMock).toHaveBeenCalledTimes(1)
-    expect(renderMock).toHaveBeenCalledWith("add-team", { layout: "layout" })
+    expect(renderMock).toHaveBeenCalledWith("add", { layout: "layout", data:{ isTeam, areas} })
+})
+test("renderAddPage muestra otra error si no hay areas", async() => {
+    const redirectMock = jest.fn()
+    const isTeam = true
+    const areas = []
+    const req = {session: {errors: []}}
+    areaService.getAll.mockImplementationOnce(() => Promise.resolve(areas))
+
+    await controller.renderAddPage(req, {redirect: redirectMock})
+
+    expect(redirectMock).toHaveBeenCalledTimes(1)
+    expect(redirectMock).toHaveBeenCalledWith("/club")
+    expect(req.session.errors).not.toEqual([])
 })
 
 test("renderEditPage se ejecuta correctamente", async() => {
     const renderMock = jest.fn()
-    const equipo = {id: "1"}
+    const team = {id: 1}
+    const req = { query: { id: 1}}
+    const areas = [{}, {}]
 
-    service.getById.mockImplementationOnce( () => Promise.resolve(equipo))
+    service.getById.mockImplementationOnce( () => Promise.resolve(team))
+    areaService.getAll.mockImplementationOnce(() => Promise.resolve(areas))
 
-    await controller.renderEditPage({ query: { id: "1"}} , {render: renderMock})
+    await controller.renderEditPage(req , {render: renderMock})
 
     expect(renderMock).toHaveBeenCalledTimes(1)
-    expect(service.getById).toHaveBeenCalledWith("1")
-    expect(renderMock).toHaveBeenCalledWith("edit-team", { layout: "layout", data:{ equipo } })
+    expect(service.getById).toHaveBeenCalledWith(1)
+    expect(renderMock).toHaveBeenCalledWith("edit", { layout: "layout", data:{ team, areas } })
 })
 test("renderEditPage falla al renderear el form para editar un equipo sin un ID ", async() => {
     const renderMock = jest.fn()
@@ -91,16 +120,16 @@ test("renderEditPage falla al renderear el form para editar un equipo sin un ID 
 
 })
 test("view se ejecuta correctamente", async() => {
-    const team = {id: "1"}
+    const team = {id: 1}
     const renderMock = jest.fn()
 
     service.getById.mockImplementationOnce( () => Promise.resolve(team))
 
-    await controller.view({ query: { id: "1"}} , {render: renderMock})
+    await controller.view({ query: { id: 1}} , {render: renderMock})
 
-    expect(service.getById).toHaveBeenCalledWith("1")
+    expect(service.getById).toHaveBeenCalledWith(1)
     expect(renderMock).toHaveBeenCalledTimes(1)
-    expect(renderMock).toHaveBeenCalledWith("view-team", { layout: "layout", data:{ team } })
+    expect(renderMock).toHaveBeenCalledWith("view", { layout: "layout", data:{ team } })
 })
 test("view falla al intentar cargar un equipo sin un ID", async() => {
     const renderMock = jest.fn()
@@ -152,15 +181,15 @@ test("saveNewTeam se ejecuta correctamente", async() => {
 })
 
 test("delete se ejecuta correctamente", async() => {
-    const team = {id: "1"}
+    const team = {id: 1}
     const redirectMock = jest.fn()
 
     service.delete.mockImplementationOnce( () => Promise.resolve(team))
 
-    await controller.delete({query: {id: "1"} , session: {messages: [], errors: []}}, {redirect: redirectMock})
+    await controller.delete({query: {id: 1} , session: {messages: [], errors: []}}, {redirect: redirectMock})
 
     expect(service.delete).toHaveBeenCalledTimes(1)
-    expect(service.delete).toHaveBeenCalledWith("1")
+    expect(service.delete).toHaveBeenCalledWith(1)
     expect(redirectMock).toHaveBeenCalledWith("/club")
 })
 test("renderEditPage setea un error y redirecciona correctamente", async() => {
