@@ -2,7 +2,6 @@ const { Equipo } = require("../entities/club.js")
 const NotMappedError = require("./errors/notMappedError")
 const InvalidIdError = require("./errors/invalidIdError")
 
-
 module.exports = class ClubService{
     /**
      * 
@@ -32,7 +31,7 @@ module.exports = class ClubService{
         if(!(newTeam instanceof Equipo)){
             throw new NotMappedError("team-not-mapped")
         }
-        
+
         return this.clubRepository.saveNewTeam(newTeam)
     }
 
@@ -53,7 +52,7 @@ module.exports = class ClubService{
      * @param {String} id 
      */
     async delete(id){
-        if(id === undefined || typeof id !== "string"){
+        if(id === undefined || typeof id !== "number"){
             throw new InvalidIdError("El ID introducido no es valido")
         }
         
@@ -64,7 +63,7 @@ module.exports = class ClubService{
      * @returns {Promise<Array<import("../../entities/club.js")>>}
      */
     async getAll(){
-        return this.clubRepository.getAll()    
+        return await this.clubRepository.getAll()   
     }
     
 }
