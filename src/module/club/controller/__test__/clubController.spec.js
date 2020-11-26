@@ -31,7 +31,7 @@ const exampleBody = {
     telefono: '+44 (020) 76195003',
     website: 'http://www.arsenal.com',
     area_id: '38'
-} // ESTO NECESITA PASAR POR EL MAPPER
+} // PASA POR UN MAPPER EN CADA FUNCION
 
 test("renderAddPage se ejecuta correctamente para agregar un equipo", async() => {
     const areas = [{},{}]
@@ -154,13 +154,6 @@ test("saveNewTeam redirige a /club al fallar", async() => {
     expect(redirectMock).toHaveBeenCalledWith("/club")
     expect(req.session.errors).not.toEqual([])
 })
-// TESTEAR INDEX CORRECTAMENTE 
-// TESTEAR INDEX CORRECTAMENTE 
-// TESTEAR INDEX CORRECTAMENTE 
-// TESTEAR INDEX CORRECTAMENTE 
-// TESTEAR INDEX CORRECTAMENTE 
-// TESTEAR INDEX CORRECTAMENTE 
-// TESTEAR INDEX CORRECTAMENTE 
 
 test("view falla al no introducir un id", async() => {
     const req = {query: {}}
@@ -226,3 +219,31 @@ test("delete falla y setea un error", async() => {
     expect(redirectMock).toHaveBeenCalledTimes(1)
     expect(redirectMock).toHaveBeenCalledWith("/club")
 })
+test("index muestra correctamente la lista de equipos", async() => {
+    const req = {session: {messages: [], errors: []}}
+    const teamsResponse = false
+    const renderMock = jest.fn()
+    const { errors, messages } = req.session
+    service.getAll = jest.fn().mockImplementationOnce(() => Promise.resolve(false))
+
+    await controller.index(req, {render: renderMock})
+    expect(renderMock).toHaveBeenCalledTimes(1)
+    expect(renderMock).toHaveBeenCalledWith("empty-team-list", { layout: "layout", data:{ teamsResponse, errors, messages } })
+    expect(req.session.errors).toEqual([])
+    expect(req.session.messages).toEqual([])
+})
+test("index muestra otra vista si la lista de equipos esta vacia", async() => {
+    const req = {session: {messages: [], errors: []}}
+    const teamsResponse = [{}, {}, {}]
+    const renderMock = jest.fn()
+    const { errors, messages } = req.session
+    
+    service.getAll = jest.fn().mockImplementationOnce(() => Promise.resolve([{}, {}, {}]))
+
+    await controller.index(req, {render: renderMock})
+    expect(renderMock).toHaveBeenCalledTimes(1)
+    expect(renderMock).toHaveBeenCalledWith("main", { layout: "layout", data:{ teamsResponse, errors, messages } })
+    expect(req.session.errors).toEqual([])
+    expect(req.session.messages).toEqual([])
+})
+
