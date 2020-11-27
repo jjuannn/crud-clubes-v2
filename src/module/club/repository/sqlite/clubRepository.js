@@ -4,7 +4,6 @@ const UndefinedError = require("../errors/undefinedError")
 const InvalidIdError = require("../errors/invalidIdError")
 const AbstractClubRepository = require("../abstractRepository")
 const { fromModelToEntity } = require("../../mapper/dbMapper")
-const club = require("../../entities/club.js")
 
 module.exports = class ClubRepository extends AbstractClubRepository{
 
