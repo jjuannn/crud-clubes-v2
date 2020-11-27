@@ -51,7 +51,7 @@ module.exports = class AreaService{
      * @param {String} id 
      */
     async delete(id){
-        if(id === undefined || typeof id !== "string"){
+        if(id === undefined || typeof id !== "number"){
             throw new InvalidIdError("El ID introducido no es valido")
         }
         

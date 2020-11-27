@@ -134,10 +134,11 @@ module.exports = class AreaController extends abstractController{
      * @param {import("express").Response} res
      */
     async delete(req, res){
+        const id = Number(req.query.id)
         if(!req.query.id){throw new UndefinedIdError("Se debe introducir un ID para borrar un equipo")}
         try{
-            await this.areaService.delete(req.query.id)
-            req.session.messages = [`El area con ID ${req.query.id} se borro correctamente`];
+            await this.areaService.delete(id)
+            req.session.messages = [`El area con ID ${id} se borro correctamente`];
         }catch(e){
             req.session.errors = [e.message]
         }
