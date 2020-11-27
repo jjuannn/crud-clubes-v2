@@ -51,9 +51,9 @@ module.exports = class AreaRepository extends AbstractAreaRepository{
         if(typeof id !== "number"){
             throw new InvalidIdError("El ID introducido no es valido")
         }
-        const teamToFind = await this.areaModel.findByPk(id)
+        const areaToFind = await this.areaModel.findByPk(id)
 
-        return fromModelToEntity(teamToFind)
+        return fromModelToEntity(areaToFind)
     }
 
     /**
@@ -63,8 +63,8 @@ module.exports = class AreaRepository extends AbstractAreaRepository{
         if(!id){
             throw new UndefinedError("Necesitas introducir un ID para borrar un area")
         }
-        const teamToDelete = await this.areaModel.findByPk(id)
-        await teamToDelete.destroy()
+        const areaToDelete = await this.areaModel.findByPk(id)
+        await areaToDelete.destroy()
 
         return true
     }
@@ -72,11 +72,11 @@ module.exports = class AreaRepository extends AbstractAreaRepository{
      * @returns {Promise<Array<import("../../entities/area.js")>>}
      */
     async getAll(){
-        const teams = await this.areaModel.findAll()
-        if(teams.length === 0){
+        const areas = await this.areaModel.findAll()
+        if(areas.length === 0){
             return false
         } else {
-            return teams.map(team => fromModelToEntity(team))
+            return areas.map(areas => fromModelToEntity(areas))
         }   
     }
 }

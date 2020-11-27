@@ -70,7 +70,7 @@ test("renderEditPage falla debido a un error en las funciones que llama", async(
 })
 
 test("saveEditedArea se ejecuta y redirecciona correctamente", async() => {
-    const req = {body: { exampleBody}, session: {messages: [], errors: []}}
+    const req = {body: { exampleBody }, session: {messages: [], errors: []}}
     const redirectMock = jest.fn()
 
     await controller.saveEditedArea(req, {redirect: redirectMock})
@@ -80,7 +80,7 @@ test("saveEditedArea se ejecuta y redirecciona correctamente", async() => {
     expect(redirectMock).toHaveBeenCalledWith("/area")
 })
 test("saveEditedArea falla por las funciones que llama", async() => {
-    const req = {body: { exampleBody}, session: {messages: [], errors: []}, file: {filename: "test"}}
+    const req = {body: { exampleBody }, session: {messages: [], errors: []}, file: {filename: "test"}}
     const redirectMock = jest.fn()
 
     service.saveEditedArea.mockImplementationOnce(() => {
