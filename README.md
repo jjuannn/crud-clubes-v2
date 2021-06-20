@@ -3,24 +3,23 @@ CRUD¹ Clubes for r/argentina-programa
 
 ¹Create, Read, Update and Delete
 
-## Correr el proyecto: 
+## Stack used:
+This application was made with:
 
-Run **npm install** to install the dependencies.
+* 🍀 Node JS and Express.
+* 🔧 Handlebars as a template engine.
+* 🔮 Bootstrap for the styling.
+* 💾 SQLite3 for the database where the data are stored.
+* ➰ Sequelize as an ORM.
 
-Run **npm run start** to start the app at port 8080.
+## To Do:
 
-Run **npm run dev** to start the app in dev-mode.
+## Instalation: 
 
-Run **npm run test** to run the tests.
-
-## To-do list :
-- [ ] Fix "area" field when editing a team. 
-- [ ] Fix tests
-## Features:
-
-- [x] SQLite implemented.
-- [x] Sequelize implemented.
-- [x] New page displayed if the team list is empty.
+- Run ```npm install``` to install the project dependencies.
+- Create a ```.env``` file in the root, copying the existing ```.env.dist``` file content.
+- Run ```npm run dev``` to start the app in development mode.
+- Ready! The app will be listening at ```http://localhost:8080/```!  
 
 # Photos: 
 ### Home page:
